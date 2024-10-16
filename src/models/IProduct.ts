@@ -34,7 +34,7 @@ export interface TopLevel {
   tax_status: string;
   tax_class: string;
   manage_stock: boolean;
-  stock_quantity: null;
+  stock_quantity: number | null;
   backorders: string;
   backorders_allowed: boolean;
   backordered: boolean;

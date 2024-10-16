@@ -19,7 +19,11 @@ export function Products() {
           <li key={product.id}>
             <Link to={`/product/${product.id}`}>
               {product.images?.length > 0 && (
-                <img src={product.images[0].src} alt="Product banner" />
+                <img
+                  width="300"
+                  src={product.images[0].src}
+                  alt="Product banner"
+                />
               )}
               <h2>{product.name}</h2>
               <p>Sale price: {product.sale_price}</p>
@@ -28,7 +32,6 @@ export function Products() {
                   ? "In stock"
                   : "Out of stock"}
               </strong>
-              <button>Add to Cart</button>
             </Link>
           </li>
         ))
