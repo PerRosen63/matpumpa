@@ -18,13 +18,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: (
-          <Products
-            baseUrl={config.baseUrl}
-            consumerKey={config.consumerKey}
-            consumerSecret={config.consumerSecret}
-          ></Products>
-        ),
+        element: <Products></Products>,
       },
       {
         path: "/product/:id",
