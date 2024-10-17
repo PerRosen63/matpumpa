@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     base: mode === "production" ? "/matpumpa/" : "/", // Set base for production
     define: {
-      "meta.env.BASE_PATH": JSON.stringify(
+      "process.env.BASE_PATH": JSON.stringify(
         mode === "production" ? "/matpumpa/" : "/"
       ),
     },
