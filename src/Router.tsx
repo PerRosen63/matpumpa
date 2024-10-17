@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Layout } from "./pages/Layout";
 import { Product } from "./pages/Product";
@@ -7,7 +7,7 @@ import { NotFound } from "./pages/NotFound";
 
 const basePath = import.meta.env.BASE_PATH || "/"; // Default to "/" if not set
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: basePath,
     element: <Layout></Layout>,
