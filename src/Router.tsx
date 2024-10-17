@@ -5,9 +5,11 @@ import { Product } from "./pages/Product";
 import { Products } from "./pages/Products";
 import { NotFound } from "./pages/NotFound";
 
+const basePath = import.meta.env.BASE_PATH || "/"; // Default to "/" if not set
+
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: basePath,
     element: <Layout></Layout>,
     errorElement: <NotFound></NotFound>,
     children: [
@@ -16,11 +18,11 @@ export const router = createBrowserRouter([
         element: <Home></Home>,
       },
       {
-        path: "/products",
+        path: "products",
         element: <Products></Products>,
       },
       {
-        path: "/product/:id",
+        path: "product/:id",
         element: <Product></Product>,
       },
     ],
