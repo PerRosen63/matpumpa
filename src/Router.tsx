@@ -4,7 +4,6 @@ import { Layout } from "./pages/Layout";
 import { Product } from "./pages/Product";
 import { Products } from "./pages/Products";
 import { NotFound } from "./pages/NotFound";
-import config from "./config";
 
 export const router = createBrowserRouter([
   {
