@@ -1,4 +1,30 @@
-:root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  h1 {
+    @apply text-clamp-h1;
+  }
+  h2 {
+    @apply text-clamp-h2;
+  }
+  h3 {
+    @apply text-clamp-h3;
+  }
+  h4 {
+    @apply text-clamp-h4;
+  }
+  h5 {
+    @apply text-clamp-h5;
+  }
+  h6 {
+    @apply text-clamp-h6;
+  }
+}
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -66,3 +92,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+ */
