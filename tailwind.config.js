@@ -5,6 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {    
+    fontFamily: {
+      'sans': ['Arima', 'Helvetica', 'Arial', 'sans-serif'],
+    },
     extend: {
       colors: {
         'orange-custom': '#ea6c06',
