@@ -4,6 +4,8 @@ import { Layout } from "./pages/Layout";
 import { Product } from "./pages/Product";
 import { Products } from "./pages/Products";
 import { NotFound } from "./pages/NotFound";
+import { About } from "./pages/About";
+import { Growing } from "./pages/Growing";
 
 const basePath = import.meta.env.BASE_PATH || "/"; // Default to "/" if not set
 
@@ -16,6 +18,14 @@ export const router = createHashRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "about",
+        element: <About></About>,
+      },
+      {
+        path: "growing",
+        element: <Growing></Growing>,
       },
       {
         path: "products",
