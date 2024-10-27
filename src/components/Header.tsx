@@ -8,6 +8,10 @@ export const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <header>
@@ -50,6 +54,7 @@ export const Header = () => {
               <ul className="flex flex-col md:flex-row font-sans small-caps text-clamp-h6 text-yellow-custom-link">
                 <li className="py-2">
                   <NavLink
+                    onClick={closeMenu}
                     className={({ isActive }) =>
                       [
                         "block h-11 leading-[2.75rem] px-4 hover:text-yellow-custom hover:bg-black/20",
@@ -63,6 +68,7 @@ export const Header = () => {
                 </li>
                 <li className="py-2">
                   <NavLink
+                    onClick={closeMenu}
                     className={({ isActive }) =>
                       [
                         "block h-11 leading-[2.75rem] px-4 hover:text-yellow-custom hover:bg-black/20",
@@ -76,6 +82,7 @@ export const Header = () => {
                 </li>
                 <li className="py-2">
                   <NavLink
+                    onClick={closeMenu}
                     className={({ isActive }) =>
                       [
                         "block h-11 leading-[2.75rem] px-4 hover:text-yellow-custom hover:bg-black/20",
@@ -89,6 +96,7 @@ export const Header = () => {
                 </li>
                 <li className="py-2">
                   <NavLink
+                    onClick={closeMenu}
                     className={({ isActive }) =>
                       [
                         "block h-11 leading-[2.75rem] px-4 hover:text-yellow-custom hover:bg-black/20",
