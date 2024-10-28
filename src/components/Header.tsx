@@ -22,12 +22,14 @@ export const Header = () => {
 
           <div className="relative flex flex-row justify-between items-center max-w-screen-xl mx-auto p-5">
             <div className="max-w-36 md:max-w-48">
-              <img
-                width="250"
-                height="auto"
-                src="https://mfdm.se/woo/wp-content/uploads/logga.svg"
-                alt=""
-              />
+              <NavLink to={"/"}>
+                <img
+                  width="250"
+                  height="auto"
+                  src="https://mfdm.se/woo/wp-content/uploads/logga.svg"
+                  alt=""
+                />
+              </NavLink>
             </div>
             <div>
               <button
