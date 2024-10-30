@@ -11,6 +11,7 @@ createRoot(document.getElementById("root")!).render(
       baseUrl={config.baseUrl}
       consumerKey={config.consumerKey}
       consumerSecret={config.consumerSecret}
+      categoriesFetched={false}
     >
       <App></App>
     </AppProvider>
