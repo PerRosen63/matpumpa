@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { ProductPresentation } from "../components/productPresentation";
+import { ProductPresentation } from "../components/ProductPresentation";
 import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 
