@@ -13,17 +13,21 @@ export const ProductPresentation = () => {
       <h2>Just a moment. Fetching product details...</h2>{" "}
     </div>
   ) : selectedProduct ? (
-    <div className="product-presentation">
-      <h2>{selectedProduct.name}</h2>
-      <h4>Original Price: {selectedProduct.regular_price}</h4>
-      <h4>Stock: {selectedProduct.stock_quantity}</h4>
-      <img
-        width="300"
-        src={selectedProduct.images[0].src}
-        alt="Product banner"
-      />
-      <ProductOrderForm></ProductOrderForm>
-    </div>
+    <section className="flex">
+      <article>
+        <img
+          width="300"
+          src={selectedProduct.images[0].src}
+          alt="Product banner"
+        />
+      </article>
+      <article>
+        <h4>Pris: {selectedProduct.regular_price}:-</h4>
+        <h4>Stock: {selectedProduct.stock_quantity}</h4>
+
+        <ProductOrderForm></ProductOrderForm>
+      </article>
+    </section>
   ) : (
     <div>Product not found</div>
   );

@@ -22,21 +22,24 @@ export const Product = () => {
 
   return (
     <>
-      <nav aria-label="breadcrumb">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item">
-            <Link to="/">Hem</Link>
-          </li>
-          {selectedProduct?.categories.map((category) => (
-            <li key={category.id}>
-              <Link to={`/product-category/${category.slug}`}>
-                {category.name}
-              </Link>
+      <section>
+        <h1>{selectedProduct?.name}</h1>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/">Hem</Link>
             </li>
-          ))}
-          <li>{selectedProduct?.name}</li>
-        </ol>
-      </nav>
+            {selectedProduct?.categories.map((category) => (
+              <li key={category.id}>
+                <Link to={`/product-category/${category.slug}`}>
+                  {category.name}
+                </Link>
+              </li>
+            ))}
+            <li>{selectedProduct?.name}</li>
+          </ol>
+        </nav>
+      </section>
 
       <ProductPresentation></ProductPresentation>
     </>
