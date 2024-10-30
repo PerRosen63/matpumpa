@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ProductPresentation } from "../components/productPresentation";
 import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
@@ -22,6 +22,22 @@ export const Product = () => {
 
   return (
     <>
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
+            <Link to="/">Hem</Link>
+          </li>
+          {selectedProduct?.categories.map((category) => (
+            <li key={category.id}>
+              <Link to={`/product-category/${category.slug}`}>
+                {category.name}
+              </Link>
+            </li>
+          ))}
+          <li>{selectedProduct?.name}</li>
+        </ol>
+      </nav>
+
       <ProductPresentation></ProductPresentation>
     </>
   );
