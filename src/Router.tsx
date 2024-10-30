@@ -32,6 +32,10 @@ export const router = createHashRouter([
         element: <Products></Products>,
       },
       {
+        path: "product-category/:categorySlug", // Dynamic route for categories
+        element: <Products />,
+      },
+      {
         path: "product/:id",
         element: <Product></Product>,
       },

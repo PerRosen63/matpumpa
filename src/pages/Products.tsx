@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useContext, useMemo, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useContext, useMemo } from "react";
 import AppContext from "../context/AppContext";
 import React from "react";
 
@@ -13,17 +13,45 @@ export function Products() {
     categoriesFetched: false,
   };
 
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const { categorySlug } = useParams();
+  const navigate = useNavigate();
+
+  const selectedCategoryObject = useMemo(() => {
+    if (!categorySlug) {
+      return null;
+    }
+    return categories.find(
+      (category) =>
+        category.name.toLowerCase().replace(/\s+/g, "-") === categorySlug
+    );
+  }, [categories, categorySlug]);
+
+  const selectedCategoryId = selectedCategoryObject?.id || null;
 
   const handleCategoryChange = (categoryId: number | null) => {
-    setSelectedCategory(categoryId);
+    if (categoryId) {
+      const category = categories.find((cat) => cat.id === categoryId);
+      if (category) {
+        const categorySlug = category.name.toLowerCase().replace(/\s+/g, "-");
+        navigate(`/product-category/${categorySlug}`);
+      }
+    } else {
+      navigate("/products");
+    }
   };
 
-  const filteredProducts = selectedCategory
-    ? products.filter((product) =>
-        product.categories.some((category) => category.id === selectedCategory)
-      )
-    : products;
+  // Filter products based on category ID from route
+  const filteredProducts = useMemo(() => {
+    if (selectedCategoryId) {
+      return products.filter((product) =>
+        product.categories.some(
+          (category) => category.id === selectedCategoryId
+        )
+      );
+    } else {
+      return products;
+    }
+  }, [products, selectedCategoryId]);
 
   const defaultCategoryObject = useMemo(() => {
     if (!categoriesFetched) {
@@ -34,30 +62,39 @@ export function Products() {
     return category;
   }, [categoriesFetched, categories]); // Recalculate only if 'categories' changes
 
-  const selectedCategoryObject = categories.find(
-    (category) => category.id === selectedCategory
-  );
-
   return (
     <>
+      {/* Breadcrumbs */}
+      <nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          {selectedCategoryObject && (
+            <li className="breadcrumb-item active" aria-current="page">
+              {selectedCategoryObject.name}
+            </li>
+          )}
+        </ol>
+      </nav>
       <div>
         {/* Filter Buttons */}
-        {/* <label>
+        <label>
           <input
             type="radio"
             name="categories"
-            value="null" // Represents "All Categories"
-            checked={selectedCategory === null}
+            value="" // Represents "All Categories"
+            checked={!selectedCategoryId}
             onChange={() => handleCategoryChange(null)}
           />
           All Categories
-        </label> */}
+        </label>
         <label>
           <input
             type="radio"
             name="categories"
             value="22" // Replace with actual category ID
-            checked={selectedCategory === 22}
+            checked={selectedCategoryId === 22}
             onChange={() => handleCategoryChange(22)}
           />
           Category 1
@@ -67,7 +104,7 @@ export function Products() {
             type="radio"
             name="categories"
             value="23" // Replace with actual category ID
-            checked={selectedCategory === 23}
+            checked={selectedCategoryId === 23}
             onChange={() => handleCategoryChange(23)}
           />
           Category 2
@@ -77,14 +114,14 @@ export function Products() {
             type="radio"
             name="categories"
             value="24" // Replace with actual category ID
-            checked={selectedCategory === 24}
+            checked={selectedCategoryId === 24}
             onChange={() => handleCategoryChange(24)}
           />
           Category 3
         </label>
 
         {/* Reset Button (Optional) */}
-        <button onClick={() => handleCategoryChange(null)}>Reset</button>
+        {/* <button onClick={() => handleCategoryChange(null)}>Reset</button> */}
       </div>
 
       {selectedCategoryObject ? (
