@@ -1,11 +1,15 @@
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
 import { ProductOrderForm } from "./ProductOrderForm";
+import parse from "html-react-parser";
 
 export const ProductPresentation = () => {
-  const { selectedProduct, loading } = useContext(AppContext) ?? {
+  const { selectedProduct, loading, wordpressImages } = useContext(
+    AppContext
+  ) ?? {
     selectedProduct: null,
     loading: true,
+    wordpressImages: [],
   };
 
   return loading ? (
@@ -15,13 +19,26 @@ export const ProductPresentation = () => {
   ) : selectedProduct ? (
     <section className="flex">
       <article>
-        <img
-          width="300"
-          src={selectedProduct.images[0].src}
-          alt="Product banner"
-        />
+        {selectedProduct?.images.map((image, index) => {
+          const wpImage = wordpressImages.find(
+            (wpImg) => wpImg.id === image.id
+          );
+          if (!wpImage) {
+            return null; // or a placeholder image
+          }
+
+          return (
+            <img
+              key={index}
+              width="300"
+              src={wpImage.media_details.sizes.medium?.source_url}
+              alt="Product banner"
+            />
+          );
+        })}
       </article>
       <article>
+        <p>{parse(selectedProduct.description)}</p>
         <h4>Pris: {selectedProduct.regular_price}:-</h4>
         <h4>Stock: {selectedProduct.stock_quantity}</h4>
 

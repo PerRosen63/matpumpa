@@ -7,6 +7,19 @@ interface Category {
   description: string; // Add description property
 }
 
+interface ImageSizes {
+  thumbnail: string;
+  medium: string;
+  large: string;
+}
+
+interface WordPressImage {
+  id: number;
+  media_details: {
+    sizes: ImageSizes;
+  };
+}
+
 interface AppContextProps {
   products: TopLevel[];
   categories: Category[];
@@ -14,6 +27,7 @@ interface AppContextProps {
   selectedProduct: TopLevel | null;
   fetchProduct: (id: number) => void;
   categoriesFetched: boolean;
+  wordpressImages: WordPressImage[];
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -41,8 +55,41 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const memoizedCategories = useMemo(() => categories, [categories]);
 
   const [categoriesFetched, setCategoriesFetched] = useState(false); // Initialize as false
+  const [wordpressImages, setWordpressImages] = useState<WordPressImage[]>([]);
+
+  const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
   useEffect(() => {
+    const fetchAllImages = async () => {
+      let allImages: WordPressImage[] = [];
+      let currentPage = 1;
+      let totalPages = 1; // Initialize to 1 to enter the loop
+
+      while (currentPage <= totalPages) {
+        try {
+          const response = await fetch(
+            `${wpBaseUrl}/wp/v2/media?per_page=100&page=${currentPage}`
+          );
+          const data: WordPressImage[] = await response.json();
+
+          // Get total pages from response headers
+          totalPages = parseInt(
+            response.headers.get("X-WP-TotalPages") || "1",
+            10
+          );
+
+          allImages = [...allImages, ...data]; // Add current page's images
+          currentPage++;
+        } catch (error) {
+          console.error("Error fetching images:", error);
+          break; // Exit the loop on error
+        }
+      }
+
+      setWordpressImages(allImages);
+    };
+    fetchAllImages();
+
     const fetchProducts = async () => {
       setLoading(true);
 
@@ -60,6 +107,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
         setCategoriesFetched(true); // Set the flag to true AFTER fetching categories
+
+        /*         const imagesResponse = await fetch(`${wpBaseUrl}/wp/v2/media`);
+        const imagesData = await imagesResponse.json();
+        setWordpressImages(imagesData);
+        console.log(imagesData); */
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -85,6 +137,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       `${baseUrl}/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
     );
     const data = await response.json();
+
     setSelectedProduct(data);
     setLoading(false);
   };
@@ -98,6 +151,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         selectedProduct,
         fetchProduct,
         categoriesFetched,
+        wordpressImages,
       }}
     >
       {children}
