@@ -23,18 +23,22 @@ export const ProductPresentation = () => {
           const wpImage = wordpressImages.find(
             (wpImg) => wpImg.id === image.id
           );
-          if (!wpImage) {
+          /* if (!wpImage) {
             return null; // or a placeholder image
+          } */
+          if (wpImage && wpImage.media_details.sizes.medium) {
+            return (
+              <img
+                key={index}
+                width="300"
+                src={wpImage.media_details.sizes.medium.source_url}
+                alt="Product banner"
+              />
+            );
+          } else {
+            // Handle the case where wpImage or medium size is not found
+            return null; // Or display a placeholder image
           }
-
-          return (
-            <img
-              key={index}
-              width="300"
-              src={wpImage.media_details.sizes.medium?.source_url}
-              alt="Product banner"
-            />
-          );
         })}
       </article>
       <article>

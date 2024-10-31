@@ -8,9 +8,15 @@ interface Category {
 }
 
 interface ImageSizes {
-  thumbnail: string;
-  medium: string;
-  large: string;
+  thumbnail: {
+    source_url: string;
+  };
+  medium: {
+    source_url: string;
+  };
+  large: {
+    source_url: string;
+  };
 }
 
 interface WordPressImage {
