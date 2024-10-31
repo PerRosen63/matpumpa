@@ -40,7 +40,6 @@ export const Product = () => {
           </ol>
         </nav>
       </section>
-
       <ProductPresentation></ProductPresentation>
     </>
   );
