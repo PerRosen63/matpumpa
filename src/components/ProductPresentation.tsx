@@ -23,9 +23,6 @@ export const ProductPresentation = () => {
           const wpImage = wordpressImages.find(
             (wpImg) => wpImg.id === image.id
           );
-          /* if (!wpImage) {
-            return null; // or a placeholder image
-          } */
           if (wpImage && wpImage.media_details.sizes.medium) {
             return (
               <img
@@ -43,8 +40,6 @@ export const ProductPresentation = () => {
       </article>
       <article>
         <p>{parse(selectedProduct.description)}</p>
-        <h4>Pris: {selectedProduct.regular_price}:-</h4>
-        <h4>Stock: {selectedProduct.stock_quantity}</h4>
 
         <ProductOrderForm></ProductOrderForm>
       </article>

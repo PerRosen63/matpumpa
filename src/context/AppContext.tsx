@@ -26,6 +26,14 @@ interface WordPressImage {
   };
 }
 
+interface Variation {
+  id: number;
+  price: string;
+  stock_quantity: number;
+  weight: string;
+  attributes: { name: string; option: string }[];
+}
+
 interface AppContextProps {
   products: TopLevel[];
   categories: Category[];
@@ -34,6 +42,7 @@ interface AppContextProps {
   fetchProduct: (id: number) => void;
   categoriesFetched: boolean;
   wordpressImages: WordPressImage[];
+  productVariations: { [productId: number]: Variation[] };
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -62,6 +71,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
   const [categoriesFetched, setCategoriesFetched] = useState(false); // Initialize as false
   const [wordpressImages, setWordpressImages] = useState<WordPressImage[]>([]);
+  const [productVariations, setProductVariations] = useState<{
+    [productId: number]: Variation[];
+  }>({});
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
@@ -139,13 +151,28 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       return;
     }
     setLoading(true);
-    const response = await fetch(
-      `${baseUrl}/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
-    );
-    const data = await response.json();
 
-    setSelectedProduct(data);
-    setLoading(false);
+    try {
+      const response = await fetch(
+        `${baseUrl}/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+      );
+      const data = await response.json();
+      setSelectedProduct(data);
+
+      const variationsResponse = await fetch(
+        `${baseUrl}/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+      );
+      const variationsData: Variation[] = await variationsResponse.json();
+
+      setProductVariations((prevVariations) => ({
+        ...prevVariations,
+        [id]: variationsData,
+      }));
+    } catch (error) {
+      console.error("Error fetching product variations:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -158,6 +185,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         fetchProduct,
         categoriesFetched,
         wordpressImages,
+        productVariations,
       }}
     >
       {children}

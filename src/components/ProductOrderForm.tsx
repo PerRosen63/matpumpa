@@ -1,11 +1,28 @@
 import config from "../config.ts";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
 export const ProductOrderForm = () => {
-  const { selectedProduct, fetchProduct } = useContext(AppContext) ?? {
+  const { selectedProduct, fetchProduct, productVariations } = useContext(
+    AppContext
+  ) ?? {
     selectedProduct: null,
     fetchProduct: () => {},
+    productVariations: {},
+  };
+
+  const [selectedVariationId, setSelectedVariationId] = useState<number | null>(
+    null
+  );
+
+  const variations = selectedProduct
+    ? productVariations[selectedProduct.id]
+    : [];
+
+  const handleVariationChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSelectedVariationId(parseInt(event.target.value, 10));
   };
 
   const handleAddToCart = async () => {
@@ -39,12 +56,35 @@ export const ProductOrderForm = () => {
 
   return (
     <>
-      <button onClick={handleAddToCart}>Add to Cart</button>
-      <strong>
-        {selectedProduct?.stock_status === "instock"
-          ? "In stock"
-          : "Out of stock"}
-      </strong>
+      <div>
+        <select
+          value={selectedVariationId || ""}
+          onChange={handleVariationChange}
+        >
+          <option value="">Välj pumpa:</option>
+          {variations.map((variation) => (
+            <option key={variation.id} value={variation.id}>
+              {variation.attributes.map(
+                (attr) => `${attr.name}: ${attr.option}`
+              )}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        {selectedProduct && (
+          <>
+            <p className="font-bold">Pris: {selectedProduct.regular_price}:-</p>
+            <p className="font-bold">Stock: {selectedProduct.stock_quantity}</p>
+          </>
+        )}
+        <button onClick={handleAddToCart}>Add to Cart</button>
+        <strong>
+          {selectedProduct?.stock_status === "instock"
+            ? "I lager"
+            : "Slut i lager"}
+        </strong>
+      </div>
     </>
   );
 };
