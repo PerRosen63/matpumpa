@@ -43,6 +43,7 @@ interface AppContextProps {
   categoriesFetched: boolean;
   wordpressImages: WordPressImage[];
   productVariations: { [productId: number]: Variation[] };
+  updateProductStock: (productId: number, newStockQuantity: number) => void;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -74,6 +75,27 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [productVariations, setProductVariations] = useState<{
     [productId: number]: Variation[];
   }>({});
+
+  // Function to update product stock in the context
+  const updateProductStock = (productId: number, newStockQuantity: number) => {
+    // Update the products array in the context
+    setProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === productId
+          ? { ...product, stock_quantity: newStockQuantity }
+          : product
+      )
+    );
+
+    // Update the selectedProduct if it matches the updated product
+    if (selectedProduct && selectedProduct.id === productId) {
+      setSelectedProduct((prevProduct) =>
+        prevProduct
+          ? { ...prevProduct, stock_quantity: newStockQuantity }
+          : null
+      );
+    }
+  };
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
@@ -144,15 +166,18 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts]);
 
   const fetchProduct = async (id: number) => {
-    // Check if the product is already in the products array
-    const existingProduct = products.find((product) => product.id === id);
-    if (existingProduct) {
-      setSelectedProduct(existingProduct);
-      return;
-    }
     setLoading(true);
-
     try {
+      // Check if the product is already in the products array
+      const existingProduct = products.find((product) => product.id === id);
+      if (existingProduct) {
+        setSelectedProduct(existingProduct);
+
+        if (productVariations[id]) {
+          return;
+        }
+      }
+
       const response = await fetch(
         `${baseUrl}/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
@@ -186,6 +211,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         categoriesFetched,
         wordpressImages,
         productVariations,
+        updateProductStock,
       }}
     >
       {children}

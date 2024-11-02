@@ -1,22 +1,27 @@
 import config from "../config.ts";
-import { useContext, useState } from "react";
+import { useContext, /* useEffect,  */ useState } from "react";
 import AppContext from "../context/AppContext";
 
 export const ProductOrderForm = () => {
-  const { selectedProduct, loading, fetchProduct, productVariations } =
-    useContext(AppContext) ?? {
-      selectedProduct: null,
-      loading: true,
-      fetchProduct: () => {},
-      productVariations: {},
-    };
+  const {
+    selectedProduct,
+    loading,
+    /* fetchProduct,  */ productVariations,
+    updateProductStock,
+  } = useContext(AppContext) ?? {
+    selectedProduct: null,
+    loading: true,
+    // fetchProduct: () => {},
+    productVariations: {},
+    updateProductStock: () => {},
+  };
 
   const [selectedVariationId, setSelectedVariationId] = useState<number | null>(
     null
   );
 
   const variations = selectedProduct
-    ? productVariations[selectedProduct.id]
+    ? productVariations[selectedProduct.id] || []
     : [];
 
   const handleVariationChange = (
@@ -28,6 +33,10 @@ export const ProductOrderForm = () => {
   const handleAddToCart = async () => {
     if (!selectedProduct) return;
 
+    const newStockQuantity = selectedProduct.stock_quantity
+      ? selectedProduct.stock_quantity - 1
+      : 0; // Or handle out-of-stock case differently
+
     try {
       const response = await fetch(
         `${config.baseUrl}/${selectedProduct.id}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
@@ -37,14 +46,18 @@ export const ProductOrderForm = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            stock_quantity: newStockQuantity,
+          }),
+          /* body: JSON.stringify({
             stock_quantity: selectedProduct.stock_quantity
               ? selectedProduct.stock_quantity - 1
               : null,
-          }),
+          }), */
         }
       );
       if (response.ok) {
-        fetchProduct(selectedProduct.id);
+        updateProductStock(selectedProduct.id, newStockQuantity);
+        // fetchProduct(selectedProduct.id);
         console.log("Stock updated!");
       } else {
         console.error("Failed stock update!");
@@ -54,9 +67,15 @@ export const ProductOrderForm = () => {
     }
   };
 
+  /* useEffect(() => {
+    if (variations.length > 0) {
+      setSelectedVariationId(variations[0].id); // Select the first variation by default
+    }
+  }, [variations]); */
+
   return (
     <>
-      {loading ? (
+      {loading || !variations.length ? (
         <div>Loading variations...</div>
       ) : (
         <div>
@@ -70,7 +89,7 @@ export const ProductOrderForm = () => {
               (variation) =>
                 variation.stock_quantity > 0 && (
                   <option key={variation.id} value={variation.id}>
-                    {variation.attributes.map((attr) => `${attr.option} kg`)}{" "}
+                    {variation.attributes?.map((attr) => `${attr.option} kg`)}{" "}
                     <span>({variation.stock_quantity})</span>
                   </option>
                 )
@@ -79,7 +98,7 @@ export const ProductOrderForm = () => {
 
           <p>
             Pris:{" "}
-            {selectedVariationId &&
+            {selectedVariationId !== null &&
               variations.find((v) => v.id === selectedVariationId)?.price +
                 `:-`}
           </p>

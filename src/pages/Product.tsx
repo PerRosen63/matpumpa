@@ -1,14 +1,17 @@
 import { Link, useParams } from "react-router-dom";
 import { ProductPresentation } from "../components/ProductPresentation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 
 export const Product = () => {
   const { id } = useParams();
-  const { fetchProduct, selectedProduct } = useContext(AppContext) ?? {
+  const { fetchProduct, selectedProduct, loading } = useContext(AppContext) ?? {
     fetchProduct: () => {},
     selectedProduct: null,
+    loading: true,
   };
+
+  const [isProductLoaded, setIsProductLoaded] = useState(false);
 
   useEffect(() => {
     if (
@@ -19,6 +22,12 @@ export const Product = () => {
       fetchProduct(parseInt(id, 10));
     }
   }, [id, fetchProduct, selectedProduct]);
+
+  useEffect(() => {
+    if (!loading) {
+      setIsProductLoaded(true);
+    }
+  }, [loading]);
 
   return (
     <>
@@ -40,7 +49,7 @@ export const Product = () => {
           </ol>
         </nav>
       </section>
-      <ProductPresentation></ProductPresentation>
+      {isProductLoaded && <ProductPresentation></ProductPresentation>}
     </>
   );
 };
