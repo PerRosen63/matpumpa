@@ -86,7 +86,12 @@ export const ProductOrderForm = () => {
         </div>
       )}
       <div>
-        <button onClick={handleAddToCart}>Add to Cart</button>
+        <button
+          className="bg-yellow-custom text-black p-5 m-5"
+          onClick={handleAddToCart}
+        >
+          Add to Cart
+        </button>
         <strong>
           {selectedProduct?.stock_status === "instock"
             ? "I lager"
