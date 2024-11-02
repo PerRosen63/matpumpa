@@ -3,13 +3,13 @@ import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
 export const ProductOrderForm = () => {
-  const { selectedProduct, fetchProduct, productVariations } = useContext(
-    AppContext
-  ) ?? {
-    selectedProduct: null,
-    fetchProduct: () => {},
-    productVariations: {},
-  };
+  const { selectedProduct, loading, fetchProduct, productVariations } =
+    useContext(AppContext) ?? {
+      selectedProduct: null,
+      loading: true,
+      fetchProduct: () => {},
+      productVariations: {},
+    };
 
   const [selectedVariationId, setSelectedVariationId] = useState<number | null>(
     null
@@ -56,28 +56,36 @@ export const ProductOrderForm = () => {
 
   return (
     <>
+      {loading ? (
+        <div>Loading variations...</div>
+      ) : (
+        <div>
+          <select
+            className="bg-green-custom"
+            value={selectedVariationId || ""}
+            onChange={handleVariationChange}
+          >
+            <option value="">Välj pumpa:</option>
+            {variations.map(
+              (variation) =>
+                variation.stock_quantity > 0 && (
+                  <option key={variation.id} value={variation.id}>
+                    {variation.attributes.map((attr) => `${attr.option} kg`)}{" "}
+                    <span>({variation.stock_quantity})</span>
+                  </option>
+                )
+            )}
+          </select>
+
+          <p>
+            Pris:{" "}
+            {selectedVariationId &&
+              variations.find((v) => v.id === selectedVariationId)?.price +
+                `:-`}
+          </p>
+        </div>
+      )}
       <div>
-        <select
-          value={selectedVariationId || ""}
-          onChange={handleVariationChange}
-        >
-          <option value="">Välj pumpa:</option>
-          {variations.map((variation) => (
-            <option key={variation.id} value={variation.id}>
-              {variation.attributes.map(
-                (attr) => `${attr.name}: ${attr.option}`
-              )}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        {selectedProduct && (
-          <>
-            <p className="font-bold">Pris: {selectedProduct.regular_price}:-</p>
-            <p className="font-bold">Stock: {selectedProduct.stock_quantity}</p>
-          </>
-        )}
         <button onClick={handleAddToCart}>Add to Cart</button>
         <strong>
           {selectedProduct?.stock_status === "instock"
