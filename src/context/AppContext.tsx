@@ -44,6 +44,11 @@ interface AppContextProps {
   wordpressImages: WordPressImage[];
   productVariations: { [productId: number]: Variation[] };
   updateProductStock: (productId: number, newStockQuantity: number) => void;
+  updateVariationStock: (
+    productId: number,
+    variationId: number,
+    newStockQuantity: number
+  ) => void;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -95,6 +100,28 @@ export const AppProvider: React.FC<AppProviderProps> = ({
           : null
       );
     }
+  };
+
+  // Function to update variation stock in the context
+  const updateVariationStock = (
+    productId: number,
+    variationId: number,
+    newStockQuantity: number
+  ) => {
+    setProductVariations((prevVariations) => {
+      const updatedVariations = { ...prevVariations };
+
+      if (updatedVariations[productId]) {
+        updatedVariations[productId] = updatedVariations[productId].map(
+          (variation) =>
+            variation.id === variationId
+              ? { ...variation, stock_quantity: newStockQuantity }
+              : variation
+        );
+      }
+
+      return updatedVariations;
+    });
   };
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
@@ -212,6 +239,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         wordpressImages,
         productVariations,
         updateProductStock,
+        updateVariationStock,
       }}
     >
       {children}

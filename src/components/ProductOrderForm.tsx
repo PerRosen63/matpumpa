@@ -1,19 +1,20 @@
 import config from "../config.ts";
-import { useContext, /* useEffect,  */ useState } from "react";
+import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
 export const ProductOrderForm = () => {
   const {
     selectedProduct,
     loading,
-    /* fetchProduct,  */ productVariations,
+    productVariations,
     updateProductStock,
+    updateVariationStock,
   } = useContext(AppContext) ?? {
     selectedProduct: null,
     loading: true,
-    // fetchProduct: () => {},
     productVariations: {},
     updateProductStock: () => {},
+    updateVariationStock: () => {},
   };
 
   const [selectedVariationId, setSelectedVariationId] = useState<number | null>(
@@ -33,45 +34,74 @@ export const ProductOrderForm = () => {
   const handleAddToCart = async () => {
     if (!selectedProduct) return;
 
-    const newStockQuantity = selectedProduct.stock_quantity
-      ? selectedProduct.stock_quantity - 1
-      : 0; // Or handle out-of-stock case differently
+    if (variations.length > 0) {
+      if (!selectedVariationId) return;
 
-    try {
-      const response = await fetch(
-        `${config.baseUrl}/${selectedProduct.id}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            stock_quantity: newStockQuantity,
-          }),
-          /* body: JSON.stringify({
-            stock_quantity: selectedProduct.stock_quantity
-              ? selectedProduct.stock_quantity - 1
-              : null,
-          }), */
-        }
+      const selectedVariation = variations.find(
+        (v) => v.id === selectedVariationId
       );
-      if (response.ok) {
-        updateProductStock(selectedProduct.id, newStockQuantity);
-        // fetchProduct(selectedProduct.id);
-        console.log("Stock updated!");
-      } else {
-        console.error("Failed stock update!");
+
+      if (!selectedVariation) return;
+
+      const newStockQuantity = selectedVariation.stock_quantity
+        ? selectedVariation.stock_quantity - 1
+        : 0; // Or handle out-of-stock case differently
+
+      try {
+        const response = await fetch(
+          `${config.baseUrl}/${selectedProduct.id}/variations/${selectedVariationId}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              stock_quantity: newStockQuantity,
+            }),
+          }
+        );
+        if (response.ok) {
+          updateVariationStock(
+            selectedProduct.id,
+            selectedVariationId,
+            newStockQuantity
+          );
+          console.log("Variation stock updated!");
+        } else {
+          console.error("Failed variation stock update!");
+        }
+      } catch (error) {
+        console.error("Error updating variation stock quantity:", error);
       }
-    } catch (error) {
-      console.error("Error updating stock quantity:", error);
+    } else {
+      const newStockQuantity = selectedProduct.stock_quantity
+        ? selectedProduct.stock_quantity - 1
+        : 0;
+
+      try {
+        const response = await fetch(
+          `${config.baseUrl}/${selectedProduct.id}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              stock_quantity: newStockQuantity,
+            }),
+          }
+        );
+        if (response.ok) {
+          updateProductStock(selectedProduct.id, newStockQuantity);
+          console.log("Simple product stock updated!");
+        } else {
+          console.error("Failed to update simple product stock!");
+        }
+      } catch (error) {
+        console.error("Error updating simple product stock quantity:", error);
+      }
     }
   };
-
-  /* useEffect(() => {
-    if (variations.length > 0) {
-      setSelectedVariationId(variations[0].id); // Select the first variation by default
-    }
-  }, [variations]); */
 
   return (
     <>
@@ -113,7 +143,7 @@ export const ProductOrderForm = () => {
         </button>
         <strong>
           {selectedProduct?.stock_status === "instock"
-            ? "I lager"
+            ? selectedProduct?.stock_quantity + " i lager"
             : "Slut i lager"}
         </strong>
       </div>
