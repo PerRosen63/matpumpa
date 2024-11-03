@@ -6,6 +6,7 @@ import { Products } from "./pages/Products";
 import { NotFound } from "./pages/NotFound";
 import { About } from "./pages/About";
 import { Growing } from "./pages/Growing";
+import { CartPage } from "./pages/CartPage";
 
 const basePath = import.meta.env.BASE_PATH || "/"; // Default to "/" if not set
 
@@ -38,6 +39,10 @@ export const router = createHashRouter([
       {
         path: "product/:id",
         element: <Product></Product>,
+      },
+      {
+        path: "cart",
+        element: <CartPage></CartPage>,
       },
     ],
   },

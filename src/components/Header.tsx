@@ -103,6 +103,20 @@ export const Header = () => {
                       Köp här
                     </NavLink>
                   </li>
+                  <li className="py-2">
+                    <NavLink
+                      onClick={closeMenu}
+                      className={({ isActive }) =>
+                        [
+                          "block h-11 leading-[2.75rem] px-4 hover:text-yellow-custom hover:bg-black/20",
+                          isActive ? "bg-black/20" : "bg-transparent",
+                        ].join(" ")
+                      }
+                      to={"/cart"}
+                    >
+                      Varukorg
+                    </NavLink>
+                  </li>
                 </ul>
               </nav>
             </div>
