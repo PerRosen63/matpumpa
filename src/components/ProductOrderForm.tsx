@@ -5,7 +5,6 @@ import AppContext from "../context/AppContext";
 export const ProductOrderForm = () => {
   const {
     selectedProduct,
-    loading,
     productVariations,
     updateProductStock,
     updateVariationStock,
@@ -105,9 +104,7 @@ export const ProductOrderForm = () => {
 
   return (
     <>
-      {loading || !variations.length ? (
-        <div>Loading variations...</div>
-      ) : (
+      {variations.length > 0 && (
         <div>
           <select
             className="bg-green-custom"
@@ -132,20 +129,29 @@ export const ProductOrderForm = () => {
               variations.find((v) => v.id === selectedVariationId)?.price +
                 `:-`}
           </p>
+
+          <strong>
+            {selectedProduct?.stock_status === "instock"
+              ? "I lager"
+              : "Slut i lager"}
+          </strong>
         </div>
       )}
+
       <div>
+        <strong>
+          {!variations.length &&
+            (selectedProduct?.stock_status === "instock"
+              ? selectedProduct?.stock_quantity + " i lager"
+              : "Slut i lager")}
+        </strong>
+
         <button
           className="bg-yellow-custom text-black p-5 m-5"
           onClick={handleAddToCart}
         >
           Add to Cart
         </button>
-        <strong>
-          {selectedProduct?.stock_status === "instock"
-            ? selectedProduct?.stock_quantity + " i lager"
-            : "Slut i lager"}
-        </strong>
       </div>
     </>
   );
