@@ -34,7 +34,7 @@ export interface Variation {
   attributes: { name: string; option: string }[];
 }
 
-interface CartItem {
+export interface CartItem {
   product: TopLevel;
   variationId?: number;
   quantity: number;
