@@ -8,12 +8,14 @@ export const ProductOrderForm = () => {
     productVariations,
     /* updateProductStock,
     updateVariationStock, */
+    addToCart,
   } = useContext(AppContext) ?? {
     selectedProduct: null,
     loading: true,
     productVariations: {},
-    updateProductStock: () => {},
-    updateVariationStock: () => {},
+    /* updateProductStock: () => {},
+    updateVariationStock: () => {}, */
+    addToCart: () => {},
   };
 
   const [selectedVariationId, setSelectedVariationId] = useState<
@@ -28,10 +30,6 @@ export const ProductOrderForm = () => {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedVariationId(parseInt(event.target.value, 10));
-  };
-
-  const { addToCart } = useContext(AppContext) ?? {
-    addToCart: () => {},
   };
 
   const handleAddToCart = async () => {
@@ -155,6 +153,7 @@ export const ProductOrderForm = () => {
         </strong>
 
         <button
+          disabled={variations.length > 0 && selectedVariationId === undefined}
           className="bg-yellow-custom text-black p-5 m-5"
           onClick={handleAddToCart}
         >
