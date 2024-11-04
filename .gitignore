@@ -28,3 +28,5 @@ tsconfig.node.tsbuildinfo
 
 API-keys.txt
 example-products.json
+
+*.txt
