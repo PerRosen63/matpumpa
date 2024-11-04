@@ -1,4 +1,4 @@
-import config from "../config.ts";
+// import config from "../config.ts";
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 
@@ -6,8 +6,8 @@ export const ProductOrderForm = () => {
   const {
     selectedProduct,
     productVariations,
-    updateProductStock,
-    updateVariationStock,
+    /* updateProductStock,
+    updateVariationStock, */
   } = useContext(AppContext) ?? {
     selectedProduct: null,
     loading: true,
@@ -16,9 +16,9 @@ export const ProductOrderForm = () => {
     updateVariationStock: () => {},
   };
 
-  const [selectedVariationId, setSelectedVariationId] = useState<number | null>(
-    null
-  );
+  const [selectedVariationId, setSelectedVariationId] = useState<
+    number | undefined
+  >(undefined);
 
   const variations = selectedProduct
     ? productVariations[selectedProduct.id] || []
@@ -30,11 +30,20 @@ export const ProductOrderForm = () => {
     setSelectedVariationId(parseInt(event.target.value, 10));
   };
 
+  const { addToCart } = useContext(AppContext) ?? {
+    addToCart: () => {},
+  };
+
   const handleAddToCart = async () => {
     if (!selectedProduct) return;
 
-    if (variations.length > 0) {
-      if (!selectedVariationId) return;
+    if (variations.length > 0 && selectedVariationId !== undefined) {
+      addToCart(selectedProduct, selectedVariationId);
+    } else {
+      addToCart(selectedProduct, undefined);
+    }
+
+    /* if (!selectedVariationId) return;
 
       const selectedVariation = variations.find(
         (v) => v.id === selectedVariationId
@@ -42,7 +51,7 @@ export const ProductOrderForm = () => {
 
       if (!selectedVariation) return;
 
-      const newStockQuantity = selectedVariation.stock_quantity
+       const newStockQuantity = selectedVariation.stock_quantity
         ? selectedVariation.stock_quantity - 1
         : 0; // Or handle out-of-stock case differently
 
@@ -98,8 +107,7 @@ export const ProductOrderForm = () => {
         }
       } catch (error) {
         console.error("Error updating simple product stock quantity:", error);
-      }
-    }
+      } */
   };
 
   return (
@@ -108,7 +116,7 @@ export const ProductOrderForm = () => {
         <div>
           <select
             className="bg-green-custom"
-            value={selectedVariationId || ""}
+            value={selectedVariationId ?? ""}
             onChange={handleVariationChange}
           >
             <option value="">Välj pumpa:</option>
@@ -125,7 +133,7 @@ export const ProductOrderForm = () => {
 
           <p>
             Pris:{" "}
-            {selectedVariationId !== null &&
+            {selectedVariationId !== undefined &&
               variations.find((v) => v.id === selectedVariationId)?.price +
                 `:-`}
           </p>

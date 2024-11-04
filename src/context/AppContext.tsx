@@ -26,12 +26,18 @@ interface WordPressImage {
   };
 }
 
-interface Variation {
+export interface Variation {
   id: number;
   price: string;
   stock_quantity: number;
   weight: string;
   attributes: { name: string; option: string }[];
+}
+
+interface CartItem {
+  product: TopLevel;
+  variationId?: number;
+  quantity: number;
 }
 
 interface AppContextProps {
@@ -49,6 +55,10 @@ interface AppContextProps {
     variationId: number,
     newStockQuantity: number
   ) => void;
+  cart: CartItem[];
+  addToCart: (product: TopLevel, variationId: number | undefined) => void;
+  removeFromCart: (productId: number, variationId?: number) => void;
+  clearCart: () => void;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -80,6 +90,40 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [productVariations, setProductVariations] = useState<{
     [productId: number]: Variation[];
   }>({});
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  const addToCart = (product: TopLevel, variationId: number | undefined) => {
+    const existingCartItemIndex = cart.findIndex(
+      (item) =>
+        item.product.id === product.id && item.variationId === variationId
+    );
+
+    if (existingCartItemIndex !== -1) {
+      setCart((prevCart) => {
+        const updatedCart = [...prevCart];
+        updatedCart[existingCartItemIndex].quantity++;
+        return updatedCart;
+      });
+    } else {
+      setCart((prevCart) => [
+        ...prevCart,
+        { product, variationId, quantity: 1 },
+      ]);
+    }
+  };
+
+  const removeFromCart = (productId: number, variationId?: number) => {
+    setCart((prevCart) =>
+      prevCart.filter(
+        (item) =>
+          item.product.id !== productId || item.variationId !== variationId
+      )
+    );
+  };
+
+  const clearCart = () => {
+    setCart([]);
+  };
 
   // Function to update product stock in the context
   const updateProductStock = (productId: number, newStockQuantity: number) => {
@@ -240,6 +284,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         productVariations,
         updateProductStock,
         updateVariationStock,
+        cart,
+        addToCart,
+        removeFromCart,
+        clearCart,
       }}
     >
       {children}

@@ -1,3 +1,5 @@
+import { Variation } from "../context/AppContext";
+
 export interface TopLevel {
   id: number;
   name: string;
@@ -58,7 +60,7 @@ export interface TopLevel {
   images: Image[];
   attributes: Attribute[];
   default_attributes: any[];
-  variations: number[];
+  variations: Variation[];
   grouped_products: any[];
   menu_order: number;
   price_html: string;
