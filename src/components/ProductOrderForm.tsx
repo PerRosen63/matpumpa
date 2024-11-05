@@ -2,6 +2,7 @@
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
 import { AmountSelector } from "./AmountSelector";
+import { TopLevel } from "../models/IProduct";
 
 export const ProductOrderForm = () => {
   const {
@@ -9,19 +10,29 @@ export const ProductOrderForm = () => {
     productVariations,
     /* updateProductStock,
     updateVariationStock, */
-    addToCart,
   } = useContext(AppContext) ?? {
     selectedProduct: null,
     loading: true,
     productVariations: {},
     /* updateProductStock: () => {},
     updateVariationStock: () => {}, */
-    addToCart: () => {},
   };
+
+  const {
+    addToCart,
+  }: {
+    addToCart: (
+      product: TopLevel,
+      variationId: number | undefined,
+      quantity?: number
+    ) => void;
+  } = useContext(AppContext) ?? { addToCart: () => {} };
 
   const [selectedVariationId, setSelectedVariationId] = useState<
     number | undefined
   >(undefined);
+
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const variations = selectedProduct
     ? productVariations[selectedProduct.id] || []
@@ -33,80 +44,16 @@ export const ProductOrderForm = () => {
     setSelectedVariationId(parseInt(event.target.value, 10));
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (selectedQuantity: number) => {
     if (!selectedProduct) return;
 
     if (variations.length > 0 && selectedVariationId !== undefined) {
-      addToCart(selectedProduct, selectedVariationId);
+      addToCart(selectedProduct, selectedVariationId, selectedQuantity);
+      console.log("selected quantity variations", selectedQuantity);
     } else {
-      addToCart(selectedProduct, undefined);
+      addToCart(selectedProduct, undefined, selectedQuantity);
+      console.log("selected quantity simple", selectedQuantity);
     }
-
-    /* if (!selectedVariationId) return;
-
-      const selectedVariation = variations.find(
-        (v) => v.id === selectedVariationId
-      );
-
-      if (!selectedVariation) return;
-
-       const newStockQuantity = selectedVariation.stock_quantity
-        ? selectedVariation.stock_quantity - 1
-        : 0; // Or handle out-of-stock case differently
-
-      try {
-        const response = await fetch(
-          `${config.baseUrl}/${selectedProduct.id}/variations/${selectedVariationId}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              stock_quantity: newStockQuantity,
-            }),
-          }
-        );
-        if (response.ok) {
-          updateVariationStock(
-            selectedProduct.id,
-            selectedVariationId,
-            newStockQuantity
-          );
-          console.log("Variation stock updated!");
-        } else {
-          console.error("Failed variation stock update!");
-        }
-      } catch (error) {
-        console.error("Error updating variation stock quantity:", error);
-      }
-    } else {
-      const newStockQuantity = selectedProduct.stock_quantity
-        ? selectedProduct.stock_quantity - 1
-        : 0;
-
-      try {
-        const response = await fetch(
-          `${config.baseUrl}/${selectedProduct.id}?consumer_key=${config.consumerKey}&consumer_secret=${config.consumerSecret}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              stock_quantity: newStockQuantity,
-            }),
-          }
-        );
-        if (response.ok) {
-          updateProductStock(selectedProduct.id, newStockQuantity);
-          console.log("Simple product stock updated!");
-        } else {
-          console.error("Failed to update simple product stock!");
-        }
-      } catch (error) {
-        console.error("Error updating simple product stock quantity:", error);
-      } */
   };
 
   return (
@@ -169,6 +116,7 @@ export const ProductOrderForm = () => {
             }
             onQuantityChange={(newQuantity) => {
               // Here you can update the quantity in your cart or state
+              setSelectedQuantity(newQuantity);
               console.log("New quantity:", newQuantity);
             }}
           />
@@ -177,7 +125,7 @@ export const ProductOrderForm = () => {
         <button
           disabled={variations.length > 0 && selectedVariationId === undefined}
           className="bg-yellow-custom text-black p-5 m-5"
-          onClick={handleAddToCart}
+          onClick={() => handleAddToCart(selectedQuantity)}
         >
           Add to Cart
         </button>

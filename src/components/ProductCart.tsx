@@ -1,15 +1,21 @@
 import { useContext } from "react";
 import AppContext, { CartItem } from "../context/AppContext";
 import { Variation } from "../context/AppContext";
+import { AmountSelector } from "./AmountSelector";
 
 export const ProductCart = () => {
-  const { cart, removeFromCart, clearCart, productVariations } = useContext(
-    AppContext
-  ) ?? {
+  const {
+    cart,
+    removeFromCart,
+    clearCart,
+    productVariations,
+    updateCartItemQuantity,
+  } = useContext(AppContext) ?? {
     cart: [],
     removeFromCart: () => {},
     clearCart: () => {},
     productVariations: {} as { [productId: number]: Variation[] },
+    updateCartItemQuantity: () => {},
   };
 
   const getItemPrice = (item: CartItem) => {
@@ -59,6 +65,28 @@ export const ProductCart = () => {
               Total: {getItemPrice(item) * item.quantity}
               :-
             </div>
+
+            <div>
+              Välj antal:
+              <AmountSelector
+                initialQuantity={item.quantity}
+                maxQuantity={
+                  item.variationId
+                    ? productVariations[item.product.id].find(
+                        (v) => v.id === item.variationId
+                      )?.stock_quantity || 0
+                    : item.product.stock_quantity || 0 // Assuming item.product has a quantity property
+                }
+                onQuantityChange={(newQuantity) => {
+                  updateCartItemQuantity(
+                    item.product.id,
+                    item.variationId,
+                    newQuantity
+                  );
+                }}
+              />
+            </div>
+
             <div>
               <button
                 onClick={() =>

@@ -97,7 +97,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   }>({});
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  const addToCart = (product: TopLevel, variationId: number | undefined) => {
+  const addToCart = (
+    product: TopLevel,
+    variationId: number | undefined,
+    quantity?: number
+  ) => {
     const existingCartItemIndex = cart.findIndex(
       (item) =>
         item.product.id === product.id && item.variationId === variationId
@@ -106,13 +110,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     if (existingCartItemIndex !== -1) {
       setCart((prevCart) => {
         const updatedCart = [...prevCart];
-        updatedCart[existingCartItemIndex].quantity++;
+        updatedCart[existingCartItemIndex].quantity += quantity || 1;
         return updatedCart;
       });
     } else {
       setCart((prevCart) => [
         ...prevCart,
-        { product, variationId, quantity: 1 },
+        { product, variationId, quantity: quantity || 1 },
       ]);
     }
   };
