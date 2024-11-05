@@ -1,6 +1,7 @@
 // import config from "../config.ts";
 import { useContext, useState } from "react";
 import AppContext from "../context/AppContext";
+import { AmountSelector } from "./AmountSelector";
 
 export const ProductOrderForm = () => {
   const {
@@ -151,6 +152,27 @@ export const ProductOrderForm = () => {
               ? selectedProduct?.stock_quantity + " i lager"
               : "Slut i lager")}
         </strong>
+
+        <div>
+          Välj antal:
+          {/* <div className="flex flex-row gap-2">
+            <button className="bg-yellow-custom text-black p-2">-</button>
+            <span className="p-2">1</span>
+            <button className="bg-yellow-custom text-black p-2">+</button>
+          </div> */}
+          <AmountSelector
+            maxQuantity={
+              selectedVariationId
+                ? variations.find((v) => v.id === selectedVariationId)
+                    ?.stock_quantity || 0
+                : selectedProduct?.stock_quantity || 0
+            }
+            onQuantityChange={(newQuantity) => {
+              // Here you can update the quantity in your cart or state
+              console.log("New quantity:", newQuantity);
+            }}
+          />
+        </div>
 
         <button
           disabled={variations.length > 0 && selectedVariationId === undefined}
