@@ -14,10 +14,10 @@ export const AmountSelector: React.FC<AmountSelectorProps> = ({
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
-    if (quantity > maxQuantity) {
-      setQuantity(maxQuantity);
-    }
-  }, [maxQuantity, quantity]);
+    //  if (quantity > maxQuantity) {
+    setQuantity(initialQuantity);
+    //  }
+  }, [initialQuantity, maxQuantity]);
 
   const handleIncrease = () => {
     const newQuantity = Math.min(quantity + 1, maxQuantity);

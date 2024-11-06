@@ -64,6 +64,8 @@ interface AppContextProps {
     variationId: number | undefined,
     newQuantity: number
   ) => void;
+  preliminaryCart: CartItem[];
+  updatePreliminaryCart: (cartItems: CartItem[]) => void;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -96,6 +98,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     [productId: number]: Variation[];
   }>({});
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [preliminaryCart, setPreliminaryCart] = useState<CartItem[]>([]);
 
   const addToCart = (
     product: TopLevel,
@@ -190,6 +193,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         return item;
       })
     );
+  };
+
+  const updatePreliminaryCart = (cartItems: CartItem[]) => {
+    setPreliminaryCart(cartItems);
   };
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
@@ -313,6 +320,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         removeFromCart,
         clearCart,
         updateCartItemQuantity,
+        preliminaryCart,
+        updatePreliminaryCart,
       }}
     >
       {children}
