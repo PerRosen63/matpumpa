@@ -65,6 +65,7 @@ interface AppContextProps {
   ) => void;
   preliminaryCart: CartItem[];
   amountTotal: number;
+  createOrder: () => Promise<void> | null;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -235,13 +236,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
       try {
         const productsResponse = await fetch(
-          `${baseUrl}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${baseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
         );
         const productsData = await productsResponse.json();
         setProducts(productsData);
 
         const categoriesResponse = await fetch(
-          `${baseUrl}/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${baseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
         );
 
         const categoriesData = await categoriesResponse.json();
@@ -279,13 +280,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       }
 
       const response = await fetch(
-        `${baseUrl}/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${baseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       const data = await response.json();
       setSelectedProduct(data);
 
       const variationsResponse = await fetch(
-        `${baseUrl}/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${baseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       const variationsData: Variation[] = await variationsResponse.json();
 
@@ -297,6 +298,43 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       console.error("Error fetching product variations:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const createOrder = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Basic " + btoa(`${consumerKey}:${consumerSecret}`),
+        },
+        body: JSON.stringify({
+          payment_method: "cod",
+          payment_method_title: "Cash on delivery",
+          set_paid: true,
+          billing: {
+            first_name: "Guest", // Or any placeholder
+            last_name: "Customer",
+          },
+          line_items: preliminaryCart.map((item) => ({
+            product_id: item.product.id,
+            variation_id: item.variationId,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Order created successfully", data);
+        clearCart();
+      } else {
+        console.error("Error creating order", data);
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
     }
   };
 
@@ -319,6 +357,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         updateCartItemQuantity,
         preliminaryCart,
         amountTotal,
+        createOrder,
       }}
     >
       {children}

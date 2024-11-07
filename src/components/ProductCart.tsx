@@ -18,7 +18,10 @@ export const ProductCart = () => {
     productVariations: {} as { [productId: number]: Variation[] },
     updateCartItemQuantity: () => {},
     amountTotal: 0,
+    createOrder: async () => {},
   };
+
+  const context = useContext(AppContext); // Get the entire context object
 
   const getItemPrice = (item: CartItem) => {
     if (item.variationId) {
@@ -35,10 +38,6 @@ export const ProductCart = () => {
     return total + getItemPrice(item) * item.quantity;
   }, 0);
 
-  /* const amountTotal = preliminaryCart.reduce((total, item) => {
-    return total + item.quantity;
-  }, 0); */
-
   console.log("ProductCart rendered!", preliminaryCart); // Log on render
 
   return (
@@ -47,11 +46,7 @@ export const ProductCart = () => {
         {preliminaryCart.map((item) => (
           <li
             className="flex flex-row gap-2"
-            key={
-              /* item.product.id.toString() +
-              (item.variationId !== undefined ? `-${item.variationId}` : "") */
-              `${item.product.id}-${item.variationId || ""}`
-            }
+            key={`${item.product.id}-${item.variationId || ""}`}
           >
             <div>
               {item.product.name}
@@ -113,9 +108,22 @@ export const ProductCart = () => {
       >
         Rensa
       </button>
-      <button className="bg-yellow-custom text-black p-5 m-5">
-        Skicka order
-      </button>
+
+      {context ? ( // Conditional rendering based on context availability
+        <>
+          <button
+            onClick={async () => {
+              await context.createOrder(); // Access createOrder directly
+            }}
+            disabled={preliminaryCart.length === 0}
+            className="bg-yellow-custom text-black p-5 m-5"
+          >
+            Skicka order
+          </button>
+        </>
+      ) : (
+        <div>Vi har tekniska problem. Var god försök senare!</div>
+      )}
     </>
   );
 };
