@@ -5,17 +5,21 @@ import { AmountSelector } from "./AmountSelector";
 
 export const ProductCart = () => {
   const {
-    cart,
+    //cart,
+    preliminaryCart,
     removeFromCart,
     clearCart,
     productVariations,
     updateCartItemQuantity,
+    amountTotal,
   } = useContext(AppContext) ?? {
-    cart: [],
+    //cart: [],
+    preliminaryCart: [],
     removeFromCart: () => {},
     clearCart: () => {},
     productVariations: {} as { [productId: number]: Variation[] },
     updateCartItemQuantity: () => {},
+    amountTotal: 0,
   };
 
   const getItemPrice = (item: CartItem) => {
@@ -29,19 +33,26 @@ export const ProductCart = () => {
     }
   };
 
-  const orderTotal = cart.reduce((total, item) => {
+  const priceTotal = preliminaryCart.reduce((total, item) => {
     return total + getItemPrice(item) * item.quantity;
   }, 0);
+
+  /* const amountTotal = preliminaryCart.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0); */
+
+  console.log("ProductCart rendered!", preliminaryCart); // Log on render
 
   return (
     <>
       <ul>
-        {cart.map((item) => (
+        {preliminaryCart.map((item) => (
           <li
             className="flex flex-row gap-2"
             key={
-              item.product.id.toString() +
-              (item.variationId !== undefined ? `-${item.variationId}` : "")
+              /* item.product.id.toString() +
+              (item.variationId !== undefined ? `-${item.variationId}` : "") */
+              `${item.product.id}-${item.variationId || ""}`
             }
           >
             <div>
@@ -55,7 +66,6 @@ export const ProductCart = () => {
                 }
             `}{" "}
             </div>
-
             <div>
               à {getItemPrice(item)}
               {":-"}
@@ -65,7 +75,6 @@ export const ProductCart = () => {
               Total: {getItemPrice(item) * item.quantity}
               :-
             </div>
-
             <div>
               Välj antal:
               <AmountSelector
@@ -86,7 +95,6 @@ export const ProductCart = () => {
                 }}
               />
             </div>
-
             <div>
               <button
                 onClick={() =>
@@ -99,8 +107,8 @@ export const ProductCart = () => {
           </li>
         ))}
       </ul>
-
-      <div>Order total: {orderTotal}:-</div>
+      <div>Totalt antal: {amountTotal}</div>
+      <div>Order total: {priceTotal}:-</div>
       <button
         onClick={clearCart}
         className="bg-yellow-custom text-black p-5 m-5"

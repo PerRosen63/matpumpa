@@ -36,7 +36,7 @@ export interface Variation {
 
 export interface CartItem {
   product: TopLevel;
-  variationId?: number;
+  variationId: number | undefined;
   quantity: number;
 }
 
@@ -65,7 +65,7 @@ interface AppContextProps {
     newQuantity: number
   ) => void;
   preliminaryCart: CartItem[];
-  updatePreliminaryCart: (cartItems: CartItem[]) => void;
+  amountTotal: number;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -103,29 +103,29 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const addToCart = (
     product: TopLevel,
     variationId: number | undefined,
-    quantity?: number
+    quantity: number = 1
   ) => {
-    const existingCartItemIndex = cart.findIndex(
-      (item) =>
-        item.product.id === product.id && item.variationId === variationId
-    );
+    setPreliminaryCart((prevCart) => {
+      const existingCartItemIndex = prevCart.findIndex(
+        (item) =>
+          item.product.id === product.id && item.variationId === variationId
+      );
 
-    if (existingCartItemIndex !== -1) {
-      setCart((prevCart) => {
+      if (existingCartItemIndex !== -1) {
         const updatedCart = [...prevCart];
-        updatedCart[existingCartItemIndex].quantity += quantity || 1;
+        updatedCart[existingCartItemIndex] = {
+          ...updatedCart[existingCartItemIndex],
+          quantity: updatedCart[existingCartItemIndex].quantity + quantity,
+        };
         return updatedCart;
-      });
-    } else {
-      setCart((prevCart) => [
-        ...prevCart,
-        { product, variationId, quantity: quantity || 1 },
-      ]);
-    }
+      } else {
+        return [...prevCart, { product, variationId, quantity }];
+      }
+    });
   };
 
   const removeFromCart = (productId: number, variationId?: number) => {
-    setCart((prevCart) =>
+    setPreliminaryCart((prevCart) =>
       prevCart.filter(
         (item) =>
           item.product.id !== productId || item.variationId !== variationId
@@ -185,7 +185,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     variationId: number | undefined,
     newQuantity: number
   ) => {
-    setCart((prevCart) =>
+    setPreliminaryCart((prevCart) =>
       prevCart.map((item) => {
         if (item.product.id === productId && item.variationId === variationId) {
           return { ...item, quantity: newQuantity };
@@ -195,9 +195,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     );
   };
 
-  const updatePreliminaryCart = (cartItems: CartItem[]) => {
-    setPreliminaryCart(cartItems);
-  };
+  const amountTotal = preliminaryCart.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
@@ -321,7 +321,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         clearCart,
         updateCartItemQuantity,
         preliminaryCart,
-        updatePreliminaryCart,
+        amountTotal,
       }}
     >
       {children}

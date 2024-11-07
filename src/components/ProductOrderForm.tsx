@@ -1,16 +1,13 @@
 // import config from "../config.ts";
 import { useContext, useEffect, useState } from "react";
-import AppContext from "../context/AppContext";
+import AppContext /* , { CartItem } */ from "../context/AppContext";
 import { AmountSelector } from "./AmountSelector";
 import { TopLevel } from "../models/IProduct";
 
 export const ProductOrderForm = () => {
-  const {
-    selectedProduct,
-    productVariations,
-    preliminaryCart,
-    updatePreliminaryCart,
-  } = useContext(AppContext) ?? {
+  const { selectedProduct, productVariations, preliminaryCart } = useContext(
+    AppContext
+  ) ?? {
     selectedProduct: null,
     loading: true,
     productVariations: {},
@@ -44,6 +41,7 @@ export const ProductOrderForm = () => {
   };
 
   const handleAddToCart = async (selectedQuantity: number) => {
+    console.log("handleAddToCart called!");
     if (!selectedProduct) return;
 
     if (variations.length > 0 && selectedVariationId !== undefined) {
@@ -51,21 +49,9 @@ export const ProductOrderForm = () => {
       console.log("selected quantity variations", selectedQuantity);
     } else {
       addToCart(selectedProduct, undefined, selectedQuantity);
-      console.log("selected quantity simple", selectedQuantity);
+      // console.log("selected quantity simple", selectedQuantity);
     }
 
-    if (preliminaryCart) {
-      updatePreliminaryCart([
-        ...preliminaryCart,
-        {
-          product: selectedProduct,
-          variationId: selectedVariationId,
-          quantity: selectedQuantity,
-        },
-      ]);
-    } else {
-      console.error("preliminaryCart is undefined");
-    }
     setSelectedQuantity(1);
   };
 
@@ -74,17 +60,6 @@ export const ProductOrderForm = () => {
     variationId?: number
   ): number => {
     console.log("Calculating available stock for:", productId, variationId); // Debug log
-
-    /*     let baseStock = 0;
-    if (variationId) {
-      baseStock =
-        variations.find((v) => v.id === selectedVariationId)?.stock_quantity ||
-        0;
-    }
-
-    if (!variationId && selectedProduct) {
-      baseStock = selectedProduct?.stock_quantity || 0;
-    } */
 
     const baseStock = variationId
       ? variations.find((v) => v.id === variationId)?.stock_quantity || 0
@@ -99,14 +74,7 @@ export const ProductOrderForm = () => {
     }
 
     const reservedQuantity = preliminaryCart.reduce((total, item) => {
-      console.log("Item in cart:", item); // Debug log
-
       if (item.product.id === productId && item.variationId === variationId) {
-        console.log(
-          "Found matching item, reserved quantity:",
-          total + item.quantity
-        ); // Debug log
-
         return total + item.quantity;
       }
       return total;
@@ -119,14 +87,14 @@ export const ProductOrderForm = () => {
     return availableStock;
   };
 
+  useEffect(() => {
+    console.log("preliminaryCart-useEffect", preliminaryCart);
+  }, [preliminaryCart]);
+
   const isAddToCartDisabled =
     (variations.length > 0 && selectedVariationId === undefined) ||
     selectedQuantity >
       getAvailableStock(selectedProduct?.id || 0, selectedVariationId);
-
-  useEffect(() => {
-    console.log("preliminaryCart", preliminaryCart);
-  }, [preliminaryCart]);
 
   return (
     <>
