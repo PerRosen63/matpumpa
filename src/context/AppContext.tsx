@@ -55,7 +55,6 @@ interface AppContextProps {
     variationId: number,
     newStockQuantity: number
   ) => void;
-  cart: CartItem[];
   addToCart: (product: TopLevel, variationId: number | undefined) => void;
   removeFromCart: (productId: number, variationId?: number) => void;
   clearCart: () => void;
@@ -97,7 +96,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [productVariations, setProductVariations] = useState<{
     [productId: number]: Variation[];
   }>({});
-  const [cart, setCart] = useState<CartItem[]>([]);
   const [preliminaryCart, setPreliminaryCart] = useState<CartItem[]>([]);
 
   const addToCart = (
@@ -315,7 +313,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         productVariations,
         updateProductStock,
         updateVariationStock,
-        cart,
         addToCart,
         removeFromCart,
         clearCart,

@@ -5,7 +5,6 @@ import { AmountSelector } from "./AmountSelector";
 
 export const ProductCart = () => {
   const {
-    //cart,
     preliminaryCart,
     removeFromCart,
     clearCart,
@@ -13,7 +12,6 @@ export const ProductCart = () => {
     updateCartItemQuantity,
     amountTotal,
   } = useContext(AppContext) ?? {
-    //cart: [],
     preliminaryCart: [],
     removeFromCart: () => {},
     clearCart: () => {},
