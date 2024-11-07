@@ -134,7 +134,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   };
 
   const clearCart = () => {
-    setCart([]);
+    setPreliminaryCart([]);
   };
 
   // Function to update product stock in the context
