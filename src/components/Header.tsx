@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Wave } from "../assets/Wave";
 import { Hamburger } from "../assets/Hamburger";
+import AppContext from "../context/AppContext";
 
 export const Header = () => {
+  const { amountTotal } = useContext(AppContext) ?? { amountTotal: 0 };
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -114,7 +117,7 @@ export const Header = () => {
                       }
                       to={"/cart"}
                     >
-                      Varukorg
+                      Varukorg: {amountTotal} st
                     </NavLink>
                   </li>
                 </ul>
