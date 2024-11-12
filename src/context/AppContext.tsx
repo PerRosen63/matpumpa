@@ -276,15 +276,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     if (!hasFetchedProducts) {
       fetchProducts();
     }
-  }, [
-    orderId,
-    baseUrl,
-    consumerKey,
-    consumerSecret,
-    hasFetchedProducts,
-    selectedProduct,
-    preliminaryCart,
-  ]);
+  }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts]);
 
   const fetchProduct = async (id: number, forceRefetch = false) => {
     setLoading(true);
