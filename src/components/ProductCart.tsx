@@ -2,6 +2,7 @@ import { useContext } from "react";
 import AppContext, { CartItem } from "../context/AppContext";
 import { Variation } from "../context/AppContext";
 import { AmountSelector } from "./AmountSelector";
+import { useNavigate } from "react-router-dom";
 
 export const ProductCart = () => {
   const {
@@ -22,6 +23,7 @@ export const ProductCart = () => {
   };
 
   const context = useContext(AppContext); // Get the entire context object
+  const navigate = useNavigate();
 
   const getItemPrice = (item: CartItem) => {
     if (item.variationId) {
@@ -113,7 +115,8 @@ export const ProductCart = () => {
         <>
           <button
             onClick={async () => {
-              await context.createOrder(); // Access createOrder directly
+              navigate("/order-confirmation");
+              await context.createOrder();
             }}
             disabled={preliminaryCart.length === 0}
             className="bg-yellow-custom text-black p-5 m-5"

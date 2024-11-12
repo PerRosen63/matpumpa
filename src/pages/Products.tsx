@@ -58,7 +58,7 @@ export function Products() {
       return null;
     }
     const category = categories.find((category) => category.id === 15);
-    console.log("Default category description:", category?.description); // Log only once
+    // console.log("Default category description:", category?.description); // Log only once
     return category;
   }, [categoriesFetched, categories]); // Recalculate only if 'categories' changes
 

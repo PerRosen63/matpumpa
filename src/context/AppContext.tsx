@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { TopLevel } from "../models/IProduct";
 
 interface Category {
@@ -66,6 +72,8 @@ interface AppContextProps {
   preliminaryCart: CartItem[];
   amountTotal: number;
   createOrder: () => Promise<void> | null;
+  isOrderCreating: boolean;
+  orderId: number | null;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -98,6 +106,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     [productId: number]: Variation[];
   }>({});
   const [preliminaryCart, setPreliminaryCart] = useState<CartItem[]>([]);
+  const [isOrderCreating, setIsOrderCreating] = useState(false);
+  const [orderId, setOrderId] = useState<number | null>(null);
 
   const addToCart = (
     product: TopLevel,
@@ -170,7 +180,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         updatedVariations[productId] = updatedVariations[productId].map(
           (variation) =>
             variation.id === variationId
-              ? { ...variation, stock_quantity: newStockQuantity }
+              ? {
+                  ...variation,
+                  stock_quantity: newStockQuantity,
+                }
               : variation
         );
       }
@@ -197,6 +210,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const amountTotal = preliminaryCart.reduce((total, item) => {
     return total + item.quantity;
   }, 0);
+
+  const fetchProductRef = useRef<
+    (id: number, forceRefetch?: boolean) => Promise<void>
+  >(() => Promise.resolve());
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
@@ -248,11 +265,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
         setCategoriesFetched(true); // Set the flag to true AFTER fetching categories
-
-        /*         const imagesResponse = await fetch(`${wpBaseUrl}/wp/v2/media`);
-        const imagesData = await imagesResponse.json();
-        setWordpressImages(imagesData);
-        console.log(imagesData); */
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -264,14 +276,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     if (!hasFetchedProducts) {
       fetchProducts();
     }
-  }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts]);
+  }, [
+    orderId,
+    baseUrl,
+    consumerKey,
+    consumerSecret,
+    hasFetchedProducts,
+    selectedProduct,
+    preliminaryCart,
+  ]);
 
-  const fetchProduct = async (id: number) => {
+  const fetchProduct = async (id: number, forceRefetch = false) => {
     setLoading(true);
+
+    console.log(`Fetching product ${id} (forceRefetch: ${forceRefetch})...`); // Log before fetching
+
     try {
-      // Check if the product is already in the products array
+      // Check if the product is already in the products array AND forceRefetch is false
       const existingProduct = products.find((product) => product.id === id);
-      if (existingProduct) {
+      if (existingProduct && !forceRefetch) {
         setSelectedProduct(existingProduct);
 
         if (productVariations[id]) {
@@ -282,8 +305,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       const response = await fetch(
         `${baseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
+      console.log(`Product ${id} fetched successfully.`); // Log after successful fetch
+
       const data = await response.json();
+
+      setProducts((prevProducts) =>
+        prevProducts.map((product) => (product.id === id ? data : product))
+      );
+
       setSelectedProduct(data);
+
+      console.log("Product data", data);
 
       const variationsResponse = await fetch(
         `${baseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
@@ -298,11 +330,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       console.error("Error fetching product variations:", error);
     } finally {
       setLoading(false);
+      console.log(`Fetching product ${id} completed.`); // Log after fetch completes (success or error)
     }
   };
 
+  fetchProductRef.current = fetchProduct;
+
   const createOrder = async () => {
     try {
+      setIsOrderCreating(true);
       const response = await fetch(`${baseUrl}/orders`, {
         method: "POST",
         headers: {
@@ -329,12 +365,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
       if (response.ok) {
         console.log("Order created successfully", data);
+        setOrderId(data.id);
+
         clearCart();
+
+        console.log("Re-fetching product data after order...");
+        preliminaryCart.forEach((item) => {
+          fetchProductRef.current(item.product.id, true); // Force re-fetch for each product
+        });
+
+        return data;
       } else {
         console.error("Error creating order", data);
+        throw new Error("Error creating order");
       }
     } catch (error) {
       console.error("Error creating order:", error);
+      throw error;
+    } finally {
+      setIsOrderCreating(false);
     }
   };
 
@@ -358,6 +407,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         preliminaryCart,
         amountTotal,
         createOrder,
+        isOrderCreating,
+        orderId,
       }}
     >
       {children}
