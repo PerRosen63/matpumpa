@@ -1,11 +1,13 @@
 import React, {
   createContext,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import { TopLevel } from "../models/IProduct";
+// import { error } from "console";
 
 interface Category {
   id: number;
@@ -46,6 +48,10 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface Order {
+  id: number;
+}
+
 interface AppContextProps {
   products: TopLevel[];
   categories: Category[];
@@ -74,6 +80,8 @@ interface AppContextProps {
   createOrder: () => Promise<void> | null;
   isOrderCreating: boolean;
   orderId: number | null;
+  orders: Order[];
+  fetchOrders: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -108,6 +116,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [preliminaryCart, setPreliminaryCart] = useState<CartItem[]>([]);
   const [isOrderCreating, setIsOrderCreating] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);
+  const [orders, setOrders] = useState<Order[]>([]); // Initialize as an empty array
 
   const addToCart = (
     product: TopLevel,
@@ -217,6 +226,21 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
+  const fetchOrders = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/orders?consumer_key=ck_561e666119f4bc496b012fbc7bb494e4cbbe641b&consumer_secret=cs_ee6dfc7f986be90970aed5bef2b9b4c6e8bde9db`
+      );
+      if (!response.ok) {
+        throw new Error(`Error fetching orders: ${response.status}`);
+      }
+      const data: Order[] = await response.json();
+      setOrders(data);
+    } catch (error) {
+      console.error("Error fetching orders", error);
+    }
+  }, [baseUrl]);
+
   useEffect(() => {
     const fetchAllImages = async () => {
       let allImages: WordPressImage[] = [];
@@ -276,7 +300,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     if (!hasFetchedProducts) {
       fetchProducts();
     }
-  }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts]);
+
+    fetchOrders();
+  }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts, fetchOrders]);
 
   const fetchProduct = async (id: number, forceRefetch = false) => {
     setLoading(true);
@@ -401,6 +427,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         createOrder,
         isOrderCreating,
         orderId,
+        orders,
+        fetchOrders,
       }}
     >
       {children}

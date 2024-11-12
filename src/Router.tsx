@@ -8,6 +8,7 @@ import { About } from "./pages/About";
 import { Growing } from "./pages/Growing";
 import { CartPage } from "./pages/CartPage";
 import { OrderConfirmation } from "./pages/OrderConfirmation";
+import { MyOrders } from "./pages/MyOrders";
 
 const basePath = import.meta.env.BASE_PATH || "/"; // Default to "/" if not set
 
@@ -48,6 +49,10 @@ export const router = createHashRouter([
       {
         path: "order-confirmation",
         element: <OrderConfirmation></OrderConfirmation>,
+      },
+      {
+        path: "my-orders",
+        element: <MyOrders></MyOrders>,
       },
     ],
   },

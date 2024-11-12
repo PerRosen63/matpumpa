@@ -41,6 +41,11 @@ export const Footer = () => {
           </article>
           <article className="my-5 px-5 flex flex-col md:flex-1 md:order-2 items-center md:items-start">
             <h4>Övrigt</h4>
+            <nav>
+              <div>
+                <NavLink to={"/my-orders"}>Mina ordrar</NavLink>
+              </div>
+            </nav>
             <div>
               <Link to={"#"}>Köpvillkor</Link>
             </div>
