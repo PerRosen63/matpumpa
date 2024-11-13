@@ -51,6 +51,16 @@ export interface CartItem {
 export interface Order {
   id: number;
   total: string;
+  line_items: {
+    name: string;
+    product_id: number;
+    quantity: number;
+    price: number;
+    total: string;
+    image: {
+      src: string;
+    }[];
+  }[];
 }
 
 interface AppContextProps {

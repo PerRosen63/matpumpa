@@ -29,7 +29,9 @@ export const MyOrders = () => {
   const order = orders.find((order) => order.id === orderId);
 
   useEffect(() => {
-    if (location.pathname === "/orders") {
+    if (location.pathname.startsWith("/order/")) {
+      setShowOrderList(false);
+    } else if (location.pathname === "/orders") {
       setShowOrderList(true);
     }
   }, [location]);
@@ -55,7 +57,14 @@ export const MyOrders = () => {
               ))}
             </ul>
           )}
-          {!showOrderList && order && <MyOrder order={order} />}
+          {!showOrderList && order && (
+            <>
+              <p>
+                <Link to={"/orders"}>Se alla</Link>
+              </p>
+              <MyOrder order={order} setShowOrderList={setShowOrderList} />
+            </>
+          )}
         </>
       )}
     </>
