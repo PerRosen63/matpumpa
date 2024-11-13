@@ -50,6 +50,7 @@ export interface CartItem {
 
 export interface Order {
   id: number;
+  total: string;
 }
 
 interface AppContextProps {
@@ -82,6 +83,8 @@ interface AppContextProps {
   orderId: number | null;
   orders: Order[];
   fetchOrders: () => Promise<void>;
+  fetchOrder: (id: number) => void;
+  selectedOrder: Order | null;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -117,6 +120,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [isOrderCreating, setIsOrderCreating] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);
   const [orders, setOrders] = useState<Order[]>([]); // Initialize as an empty array
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const addToCart = (
     product: TopLevel,
@@ -229,7 +233,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const fetchOrders = useCallback(async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/orders?consumer_key=ck_561e666119f4bc496b012fbc7bb494e4cbbe641b&consumer_secret=cs_ee6dfc7f986be90970aed5bef2b9b4c6e8bde9db`
+        `${baseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching orders: ${response.status}`);
@@ -239,7 +243,26 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     } catch (error) {
       console.error("Error fetching orders", error);
     }
-  }, [baseUrl]);
+  }, [baseUrl, consumerKey, consumerSecret]);
+
+  const fetchOrder = async (id: number) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `${baseUrl}/orders/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+      );
+
+      const data = await response.json();
+
+      setSelectedOrder(data);
+
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchAllImages = async () => {
@@ -429,6 +452,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         orderId,
         orders,
         fetchOrders,
+        fetchOrder,
+        selectedOrder,
       }}
     >
       {children}

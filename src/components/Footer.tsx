@@ -43,7 +43,7 @@ export const Footer = () => {
             <h4>Övrigt</h4>
             <nav>
               <div>
-                <NavLink to={"/my-orders"}>Mina ordrar</NavLink>
+                <NavLink to={"/orders"}>Mina ordrar</NavLink>
               </div>
             </nav>
             <div>
