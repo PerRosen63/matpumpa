@@ -57,9 +57,11 @@ export interface Order {
     quantity: number;
     price: number;
     total: string;
+    variation_id: number;
     image: {
+      id: string;
       src: string;
-    }[];
+    };
   }[];
 }
 
@@ -93,8 +95,9 @@ interface AppContextProps {
   orderId: number | null;
   orders: Order[];
   fetchOrders: () => Promise<void>;
-  fetchOrder: (id: number) => void;
-  selectedOrder: Order | null;
+  // fetchOrder: (id: number) => void;
+  // selectedOrder: Order | null;
+  // hasFetchedOrders: boolean;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -130,7 +133,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [isOrderCreating, setIsOrderCreating] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);
   const [orders, setOrders] = useState<Order[]>([]); // Initialize as an empty array
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  // const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  // const [hasFetchedOrders, setHasFetchedOrders] = useState(false);
 
   const addToCart = (
     product: TopLevel,
@@ -250,12 +254,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       }
       const data: Order[] = await response.json();
       setOrders(data);
+      // setHasFetchedOrders(true);
     } catch (error) {
       console.error("Error fetching orders", error);
     }
   }, [baseUrl, consumerKey, consumerSecret]);
 
-  const fetchOrder = async (id: number) => {
+  /* const fetchOrder = async (id: number) => {
     setLoading(true);
     try {
       const response = await fetch(
@@ -272,7 +277,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }; */
 
   useEffect(() => {
     const fetchAllImages = async () => {
@@ -462,8 +467,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         orderId,
         orders,
         fetchOrders,
-        fetchOrder,
-        selectedOrder,
+        // fetchOrder,
+        // selectedOrder,
+        // hasFetchedOrders,
       }}
     >
       {children}

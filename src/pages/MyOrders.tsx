@@ -5,8 +5,11 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { MyOrder } from "./MyOrder";
 
 export const MyOrders = () => {
-  const { fetchOrders = async () => {}, orders = [] } =
-    useContext(AppContext) ?? {};
+  const {
+    fetchOrders = async () => {},
+    orders = [],
+    // hasFetchedOrders,
+  } = useContext(AppContext) ?? {};
 
   const [isLoading, setIsLoading] = useState(true);
   const [showOrderList, setShowOrderList] = useState(true);
@@ -14,13 +17,15 @@ export const MyOrders = () => {
 
   useEffect(() => {
     const getOrders = async () => {
+      //if (!hasFetchedOrders) {
       setIsLoading(true);
       await fetchOrders();
       setIsLoading(false);
+      //}
     };
 
     getOrders();
-  }, [fetchOrders]);
+  }, [fetchOrders /* , hasFetchedOrders */]);
 
   // Access the id from the URL parameters
   const { id } = useParams<{ id: string }>();
@@ -38,31 +43,33 @@ export const MyOrders = () => {
 
   return (
     <>
-      <h1>Mina ordrar</h1>
       {isLoading ? (
-        <div>Laddar ordrar...</div>
+        <div>Laddar...</div>
       ) : (
         <>
           {showOrderList && (
-            <ul>
-              {orders.map((order: Order) => (
-                <li key={order.id}>
-                  <Link
-                    to={`/order/${order.id}`}
-                    onClick={() => setShowOrderList(false)}
-                  >
-                    <p>Order-id: {order.id}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h1>Mina ordrar</h1>
+              <ul>
+                {orders.map((order: Order) => (
+                  <li key={order.id}>
+                    <Link
+                      to={`/order/${order.id}`}
+                      onClick={() => setShowOrderList(false)}
+                    >
+                      <p>Order-id: {order.id}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {!showOrderList && order && (
             <>
-              <p>
-                <Link to={"/orders"}>Se alla</Link>
-              </p>
               <MyOrder order={order} setShowOrderList={setShowOrderList} />
+              {/* <p>
+                <Link to={"/orders"}>Se alla</Link>
+              </p> */}
             </>
           )}
         </>
