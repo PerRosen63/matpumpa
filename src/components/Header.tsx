@@ -23,7 +23,7 @@ export const Header = () => {
         <div className="relative">
           <Wave></Wave>
 
-          <div className="relative flex flex-row justify-between items-center max-w-screen-xl mx-auto p-5">
+          <div className="relative flex flex-row justify-between items-center max-w-screen-xl mx-auto p-5 min-[1330px]:px-0">
             <div className="max-w-36 md:max-w-48">
               <NavLink to={"/"}>
                 <img

@@ -3,6 +3,7 @@ import AppContext from "../context/AppContext";
 import { Order } from "../context/AppContext";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { MyOrder } from "./MyOrder";
+import { TitleSection } from "../style_components/TitleSection";
 
 export const MyOrders = () => {
   const {
@@ -48,8 +49,9 @@ export const MyOrders = () => {
       ) : (
         <>
           {showOrderList && (
-            <div>
-              <h1>Mina ordrar</h1>
+            <>
+              <TitleSection>Mina ordrar</TitleSection>
+
               <ul>
                 {orders.map((order: Order) => (
                   <li key={order.id}>
@@ -62,7 +64,7 @@ export const MyOrders = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </>
           )}
           {!showOrderList && order && (
             <>

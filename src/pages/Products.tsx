@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useContext, useMemo } from "react";
 import AppContext from "../context/AppContext";
 import React from "react";
+import { TitleSection } from "../style_components/TitleSection";
 
 export function Products() {
   const { products, categories, loading, categoriesFetched } = useContext(
@@ -64,6 +65,7 @@ export function Products() {
 
   return (
     <>
+      <TitleSection>Köp här</TitleSection>
       {/* Breadcrumbs */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">

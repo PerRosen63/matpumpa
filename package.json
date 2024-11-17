@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "grommet-icons": "^4.12.1",
     "html-react-parser": "^5.1.18",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
+    "tailwind-merge": "^2.5.4",
     "tailwindcss-opentype": "^1.1.0"
   },
   "devDependencies": {

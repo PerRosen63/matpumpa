@@ -1,10 +1,14 @@
 import { ProductCart } from "../components/ProductCart";
+import { TitleSection } from "../style_components/TitleSection";
 
 export const CartPage = () => {
   return (
     <>
-      <h1>Varukorg</h1>
-      <ProductCart></ProductCart>
+      <TitleSection>Varukorg</TitleSection>
+
+      <section>
+        <ProductCart></ProductCart>
+      </section>
     </>
   );
 };

@@ -9,7 +9,7 @@ export const Layout = () => {
         <Header></Header>
 
         <main>
-          <div className="border max-w-screen-xl mx-auto">
+          <div className="max-w-screen-xl mx-auto max-[1330px]:px-4 mt-10 mb-16">
             <Outlet></Outlet>
           </div>
         </main>

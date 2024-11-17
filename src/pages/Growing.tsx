@@ -1,7 +1,9 @@
+import { TitleSection } from "../style_components/TitleSection";
+
 export const Growing = () => {
   return (
     <>
-      <h1>Odling & recept</h1>
+      <TitleSection>Odling & recept</TitleSection>
     </>
   );
 };

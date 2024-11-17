@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { ProductPresentation } from "../components/ProductPresentation";
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
+import { TitleSection } from "../style_components/TitleSection";
 
 export const Product = () => {
   const { id } = useParams();
@@ -31,8 +32,9 @@ export const Product = () => {
 
   return (
     <>
+      <TitleSection>{selectedProduct?.name}</TitleSection>
+
       <section>
-        <h1>{selectedProduct?.name}</h1>
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
