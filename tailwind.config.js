@@ -14,6 +14,40 @@ export default {
         'green-custom': '#626a40',
         'yellow-custom': '#fffcdf',
         'yellow-custom-link': '#fff38c',
+
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
       },
       fontSize: {
         'clamp-h1': "clamp(3rem, 2.5385rem + 2.0513vw, 4rem)",
@@ -37,11 +71,30 @@ export default {
         'start-1': "url(https://mfdm.se/woo/wp-content/uploads/pumpa1_blur-600x508.jpg);",
         'start-2': "url(https://mfdm.se/woo/wp-content/uploads/pumpor1_blur-600x329.jpg);",
         'start-3': "url(https://mfdm.se/woo/wp-content/uploads/pumpa2_blur-600x579.jpg);",
-      }
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      borderRadius: {
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
+        sm: "calc(var(--radius) - 4px)",
+      },
     },
   },
   plugins: [
-    require('tailwindcss-opentype'),
+    require('tailwindcss-opentype', "tailwindcss-animate"),
     function ({ addComponents, theme }) {
       addComponents({
         '.square': {
@@ -52,8 +105,7 @@ export default {
         '.border-rounded': {
           borderRadius: "20px",
           border: "6px solid #ea6c06",
-
-        }
+        },
       })
     }
   ],

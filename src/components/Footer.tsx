@@ -7,40 +7,42 @@ export const Footer = () => {
       <footer className="bg-black/20">
         <section className="py-3 max-w-screen-xl mx-auto flex flex-col md:flex-row">
           <article className="my-5 px-5 flex flex-col md:flex-1 items-center md:items-start">
-            <h4>Kontakta oss!</h4>
-            <div>
-              <Link className="flex flex-row items-center" to={"#"}>
-                <Phone
-                  color="plain"
-                  size="1rem"
-                  className="[&>path]:fill-yellow-custom-link [&>path]:stroke-yellow-custom-link"
-                ></Phone>
-                <p className="mx-2">123-456 789</p>
-              </Link>
-            </div>
-            <div>
-              <Link className="flex flex-row items-center" to={"#"}>
-                <MapLocation
-                  color="plain"
-                  size="1rem"
-                  className="[&>path]:stroke-yellow-custom-link"
-                ></MapLocation>
-                <p className="mx-2">Vägen 123, 123 45 Staden</p>
-              </Link>
-            </div>
-            <div>
-              <Link className="flex flex-row items-center" to={"#"}>
-                <MailOption
-                  color="plain"
-                  size="1rem"
-                  className="[&>path]:stroke-yellow-custom-link"
-                ></MailOption>
-                <p className="mx-2">pumpa@matpumpa.se</p>
-              </Link>
+            <h4 className="mb-3">Kontakta oss!</h4>
+            <div className="flex flex-col gap-y-1">
+              <div>
+                <Link className="flex flex-row items-center" to={"#"}>
+                  <Phone
+                    color="plain"
+                    size="1rem"
+                    className="[&>path]:fill-yellow-custom-link [&>path]:stroke-yellow-custom-link"
+                  ></Phone>
+                  <p className="mx-2 my-0">123-456 789</p>
+                </Link>
+              </div>
+              <div>
+                <Link className="flex flex-row items-center" to={"#"}>
+                  <MapLocation
+                    color="plain"
+                    size="1rem"
+                    className="[&>path]:stroke-yellow-custom-link"
+                  ></MapLocation>
+                  <p className="mx-2 my-0">Vägen 123, 123 45 Staden</p>
+                </Link>
+              </div>
+              <div>
+                <Link className="flex flex-row items-center" to={"#"}>
+                  <MailOption
+                    color="plain"
+                    size="1rem"
+                    className="[&>path]:stroke-yellow-custom-link"
+                  ></MailOption>
+                  <p className="mx-2 my-0">pumpa@matpumpa.se</p>
+                </Link>
+              </div>
             </div>
           </article>
           <article className="my-5 px-5 flex flex-col md:flex-1 md:order-2 items-center md:items-start">
-            <h4>Övrigt</h4>
+            <h4 className="mb-3">Övrigt</h4>
             <nav>
               <div>
                 <NavLink to={"/orders"}>Mina ordrar</NavLink>
@@ -66,7 +68,7 @@ export const Footer = () => {
         </section>
         <section className="py-1 w-full bg-black/20">
           <div className="max-w-screen-xl mx-auto">
-            <p className="text-center">
+            <p className="text-center m-3">
               © 2024 | matpumpa.se | All Rights Reserved.
             </p>
           </div>

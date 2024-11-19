@@ -7,7 +7,7 @@ export const ContentSection = (
     <>
       <section
         {...props}
-        className={"flex flex-col justify-center " + props.className}
+        className={"my-10 flex flex-col justify-center" + " " + props.className}
       ></section>
     </>
   );
