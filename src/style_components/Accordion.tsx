@@ -5,43 +5,7 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { cn } from "../utils/cn";
 import { ChevronDown } from "lucide-react";
 
-/* interface AccordionProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> {
-  defaultOpen?: boolean;
-} */
-
 const Accordion = AccordionPrimitive.Root;
-
-/* const Accordion = ({
-    children,
-    defaultOpen = false,
-    ...props
-  }: AccordionProps) => {
-    const [openValue, setOpenValue] = React.useState<string | null>(
-      defaultOpen ? "item-1" : null
-    );
-  
-    const handleValueChange = (value: string | null) => {
-      setOpenValue(value);
-    };
-  
-  
-    return (
-      <AccordionPrimitive.Root
-        type="single"
-        collapsible
-        value={openValue}
-        onValueChange={handleValueChange} // Use the typed handler
-        {...props}
-      >
-        {React.Children.map(children, (child, index) =>
-          React.cloneElement(child as React.Element<any>, {
-            value: `item-${index + 1}`, // More robust value setting
-          })
-        )}
-      </AccordionPrimitive.Root>
-    );
-  }; */
 
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
