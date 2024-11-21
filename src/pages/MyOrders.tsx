@@ -44,34 +44,42 @@ export const MyOrders = () => {
 
   return (
     <>
+      <TitleSection>Mina ordrar</TitleSection>
       {isLoading ? (
-        <div>Laddar...</div>
+        <div className="loaderText flex flex-col items-center">
+          <h4>Ett ögonblick. Vi hämtar dina ordrar...</h4>{" "}
+          <div className="pt-4">
+            <img
+              width="75"
+              src="https://mfdm.se/woo/wp-content/uploads/pumpkin.png"
+              alt="pumpa"
+              className="animate-spin"
+            />
+          </div>
+        </div>
       ) : (
         <>
           {showOrderList && (
             <>
-              <TitleSection>Mina ordrar</TitleSection>
-
-              <ul>
-                {orders.map((order: Order) => (
-                  <li key={order.id}>
-                    <Link
-                      to={`/order/${order.id}`}
-                      onClick={() => setShowOrderList(false)}
-                    >
-                      <p>Order-id: {order.id}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div className="max-w-xl w-full mx-auto">
+                <ul>
+                  {orders.map((order: Order) => (
+                    <li key={order.id}>
+                      <Link
+                        to={`/order/${order.id}`}
+                        onClick={() => setShowOrderList(false)}
+                      >
+                        <p>Order-id: {order.id}</p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </>
           )}
           {!showOrderList && order && (
             <>
               <MyOrder order={order} setShowOrderList={setShowOrderList} />
-              {/* <p>
-                <Link to={"/orders"}>Se alla</Link>
-              </p> */}
             </>
           )}
         </>

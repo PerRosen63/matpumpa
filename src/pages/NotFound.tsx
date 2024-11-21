@@ -1,7 +1,12 @@
+import { Header } from "@/components/Header";
+
 export const NotFound = () => {
   return (
     <>
-      <h1>Ojojoj, nu blidde're fel!</h1>
+      <Header></Header>
+      <h4 className="text-center text-yellow-custom mt-12">
+        Sidan eller produkten saknas!
+      </h4>
     </>
   );
 };
