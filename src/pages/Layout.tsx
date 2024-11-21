@@ -5,7 +5,7 @@ import { Footer } from "../components/Footer";
 export const Layout = () => {
   return (
     <>
-      <div className="text-yellow-custom">
+      <div className="flex flex-col text-yellow-custom min-h-screen">
         <Header></Header>
 
         <main>

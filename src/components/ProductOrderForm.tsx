@@ -167,7 +167,7 @@ export const ProductOrderForm = () => {
               : "Slut i lager")}
         </strong>
         <div>
-          Välj antal:
+          <span className="block mb-2">Välj antal: </span>
           <AmountSelector
             /* maxQuantity={
               selectedVariationId

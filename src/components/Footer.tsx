@@ -4,7 +4,7 @@ import { MailOption, MapLocation, Phone } from "grommet-icons";
 export const Footer = () => {
   return (
     <>
-      <footer className="bg-black/20">
+      <footer className="mt-auto bg-black/20">
         <section className="py-3 max-w-screen-xl mx-auto flex flex-col md:flex-row">
           <article className="my-5 px-5 flex flex-col md:flex-1 items-center md:items-start">
             <h4 className="mb-3">Kontakta oss!</h4>
@@ -12,6 +12,7 @@ export const Footer = () => {
               <div>
                 <Link className="flex flex-row items-center" to={"#"}>
                   <Phone
+                    aria-label="phone"
                     color="plain"
                     size="1rem"
                     className="[&>path]:fill-yellow-custom-link [&>path]:stroke-yellow-custom-link"
@@ -22,6 +23,7 @@ export const Footer = () => {
               <div>
                 <Link className="flex flex-row items-center" to={"#"}>
                   <MapLocation
+                    aria-label="map-location"
                     color="plain"
                     size="1rem"
                     className="[&>path]:stroke-yellow-custom-link"
@@ -32,6 +34,7 @@ export const Footer = () => {
               <div>
                 <Link className="flex flex-row items-center" to={"#"}>
                   <MailOption
+                    aria-label="mail-option"
                     color="plain"
                     size="1rem"
                     className="[&>path]:stroke-yellow-custom-link"
