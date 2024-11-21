@@ -8,7 +8,7 @@ export const ContentSectionNarrow = (
       <section
         {...props}
         className={
-          "m-10 flex flex-col justify-center max-w-4xl mx-auto" +
+          "w-full my-5 md:my-10 flex flex-col justify-center max-w-4xl mx-auto" +
           " " +
           props.className
         }

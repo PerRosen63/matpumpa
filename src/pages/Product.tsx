@@ -3,6 +3,7 @@ import { ProductPresentation } from "../components/ProductPresentation";
 import { useContext, useEffect, useState } from "react";
 import AppContext from "../context/AppContext";
 import { TitleSection } from "../style_components/TitleSection";
+import { ContentSection } from "@/style_components/ContentSection";
 
 export const Product = () => {
   const { id } = useParams();
@@ -33,25 +34,29 @@ export const Product = () => {
   return (
     <>
       <TitleSection>{selectedProduct?.name}</TitleSection>
-
-      <section>
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link to="/">Hem</Link>
-            </li>
-            {selectedProduct?.categories.map((category) => (
-              <li key={category.id}>
-                <Link to={`/product-category/${category.slug}`}>
-                  {category.name}
-                </Link>
+      <ContentSection>
+        <div className="my-2">
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb flex">
+              <li className="breadcrumb-item">
+                <Link to="/products/">Alla</Link>
               </li>
-            ))}
-            <li>{selectedProduct?.name}</li>
-          </ol>
-        </nav>
-      </section>
-      {isProductLoaded && <ProductPresentation></ProductPresentation>}
+              <span className="mx-2">/</span>
+              {selectedProduct?.categories.map((category) => (
+                <li key={category.id}>
+                  <Link to={`/product-category/${category.slug}`}>
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+              <span className="mx-2">/</span>
+              <li>{selectedProduct?.name}</li>
+            </ol>
+          </nav>
+        </div>
+
+        {isProductLoaded && <ProductPresentation></ProductPresentation>}
+      </ContentSection>
     </>
   );
 };

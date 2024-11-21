@@ -11,16 +11,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/style_components/Accordion";
+import { ContentSection } from "@/style_components/ContentSection";
 
 export function Products() {
-  const { products, categories, loading, categoriesFetched } = useContext(
-    AppContext
-  ) ?? {
-    products: [],
-    categories: [],
-    loading: true,
-    categoriesFetched: false,
-  };
+  const { products, categories, loading, categoriesFetched, wordpressImages } =
+    useContext(AppContext) ?? {
+      products: [],
+      categories: [],
+      loading: true,
+      categoriesFetched: false,
+      wordpressImages: [],
+    };
 
   const { categorySlug } = useParams();
   const navigate = useNavigate();
@@ -87,146 +88,181 @@ export function Products() {
   return (
     <>
       <TitleSection>Köp våra matpumpor!</TitleSection>
-      <ContentSectionNarrow>
-        <div>
-          <div className="flex max-md:flex-col mt-10 mb-4 max-md:items-center justify-between gap-y-1">
-            {/* Filter Buttons */}
-            <label className="text-center max-md:min-w-64 lg:min-w-64 checkbox-label py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
-              <input
-                className="opacity-0"
-                type="radio"
-                name="categories"
-                value="22" // Replace with actual category ID
-                checked={selectedCategoryId === 22}
-                onChange={() => handleCategoryChange(22)}
-              />
-              <span className="ml-[-0.6rem]">Curcubita Pepo</span>
-            </label>
-
-            <label className="text-center max-md:min-w-64 lg:min-w-64 checkbox-label py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
-              <input
-                className="opacity-0"
-                type="radio"
-                name="categories"
-                value="23" // Replace with actual category ID
-                checked={selectedCategoryId === 23}
-                onChange={() => handleCategoryChange(23)}
-              />
-              <span className="ml-[-0.6rem]">Curcubita Maxima</span>
-            </label>
-            <label className="text-center max-md:min-w-64 lg:min-w-64 checkbox-label py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
-              <input
-                className="opacity-0"
-                type="radio"
-                name="categories"
-                value="24" // Replace with actual category ID
-                checked={selectedCategoryId === 24}
-                onChange={() => handleCategoryChange(24)}
-              />
-              <span className="ml-[-0.6rem]">Curcubita Moschata</span>
-            </label>
+      {loading ? (
+        <div className="loaderText flex flex-col items-center">
+          <h4>Ett ögonblick. Vi hämtar produkter...</h4>{" "}
+          <div className="pt-4">
+            <img
+              width="75"
+              src="https://mfdm.se/woo/wp-content/uploads/pumpkin.png"
+              alt="pumpa"
+              className="animate-spin"
+            />
           </div>
         </div>
-        <div className="flex justify-center text-center">
-          <label className="checkbox-label-all cursor-pointer">
-            <input
-              className="opacity-0"
-              type="radio"
-              name="categories"
-              value="" // Represents "All Categories"
-              checked={!selectedCategoryId}
-              onChange={() => handleCategoryChange(null)}
-            />
-            <FormRefresh
-              color="plain"
-              size="2rem"
-              className="ml-[-0.6rem] [&>path]:stroke-yellow-custom-link"
-            ></FormRefresh>
-            <p>Visa alla</p>
-          </label>
-        </div>
-
-        <Accordion
-          type="single"
-          collapsible
-          value={accordionOpen as "item-1" | undefined}
-          onValueChange={(value) =>
-            setAccordionOpen(value as "item-1" | null | undefined)
-          }
-        >
-          {/* <Accordion defaultOpen={!selectedCategoryId}> */}
-
-          <AccordionItem
-            value="item-1"
-            className="bg-yellow-custom text-green-custom p-4 rounded-xl border-double border-7 border-orange-custom"
-          >
-            {selectedCategoryObject ? (
-              <div>
-                <AccordionTrigger>
-                  {selectedCategoryObject.name}
-                </AccordionTrigger>
-
-                {selectedCategoryObject.description
-                  .split("\r\n\r\n")
-                  .map((line, index) => (
-                    <AccordionContent>
-                      <React.Fragment key={index}>
-                        <p>{line}</p>
-                      </React.Fragment>
-                    </AccordionContent>
-                  ))}
-              </div>
-            ) : (
-              <div>
-                <AccordionTrigger>Lite roliga fakta</AccordionTrigger>
-                <AccordionContent>
-                  <p>{defaultCategoryObject?.description}</p>
-                </AccordionContent>
-              </div>
-            )}
-          </AccordionItem>
-        </Accordion>
-      </ContentSectionNarrow>
-
-      {loading ? (
-        <div className="loaderText">
-          <h2>Just a moment. Fetching products...</h2>{" "}
-        </div>
       ) : (
-        <ul>
-          {products ? (
-            filteredProducts.map((product) => (
-              <li key={product.id}>
-                <Link to={`/product/${product.id}`}>
-                  {product.images?.length > 0 && (
-                    <img
-                      width="300"
-                      src={product.images[0].src}
-                      alt="Product banner"
-                    />
-                  )}
-                  <h2>{product.name}</h2>
-                  Categories:{" "}
-                  <ul>
-                    {product.categories.map((category) => (
-                      <li key={category.id}>
-                        {category.name} {category.id}
-                      </li>
-                    ))}
-                  </ul>
-                  <p>Sale price: {product.sale_price}</p>
-                  <strong>
-                    {product.stock_status === "instock"
-                      ? "In stock"
-                      : "Out of stock"}
-                  </strong>
-                </Link>
-              </li>
-            ))
-          ) : (
-            <li>No products found</li>
-          )}
-        </ul>
+        <>
+          <ContentSectionNarrow>
+            <div>
+              <div className="flex max-md:flex-col mt-5 md:mt-10 mb-4 max-md:items-center justify-between gap-y-1">
+                {/* Filter Buttons */}
+                <label className="text-center min-w-64 md:min-w-56 lg:min-w-64 checkbox-label my-1 py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
+                  <input
+                    className="opacity-0"
+                    type="radio"
+                    name="categories"
+                    value="22" // Replace with actual category ID
+                    checked={selectedCategoryId === 22}
+                    onChange={() => handleCategoryChange(22)}
+                  />
+                  <span className="ml-[-0.6rem]">Curcubita Pepo</span>
+                </label>
+
+                <label className="text-center min-w-64 md:min-w-56 lg:min-w-64 checkbox-label my-1 py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
+                  <input
+                    className="opacity-0"
+                    type="radio"
+                    name="categories"
+                    value="23" // Replace with actual category ID
+                    checked={selectedCategoryId === 23}
+                    onChange={() => handleCategoryChange(23)}
+                  />
+                  <span className="ml-[-0.6rem]">Curcubita Maxima</span>
+                </label>
+                <label className="text-center min-w-64 md:min-w-56 lg:min-w-64 checkbox-label my-1 py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
+                  <input
+                    className="opacity-0"
+                    type="radio"
+                    name="categories"
+                    value="24" // Replace with actual category ID
+                    checked={selectedCategoryId === 24}
+                    onChange={() => handleCategoryChange(24)}
+                  />
+                  <span className="ml-[-0.6rem]">Curcubita Moschata</span>
+                </label>
+              </div>
+            </div>
+            <div className="flex justify-center text-center">
+              <label className="checkbox-label-all cursor-pointer">
+                <input
+                  className="opacity-0"
+                  type="radio"
+                  name="categories"
+                  value="" // Represents "All Categories"
+                  checked={!selectedCategoryId}
+                  onChange={() => handleCategoryChange(null)}
+                />
+                <FormRefresh
+                  color="plain"
+                  size="2rem"
+                  className="ml-[-0.6rem] [&>path]:stroke-yellow-custom-link"
+                ></FormRefresh>
+                <p>Visa alla</p>
+              </label>
+            </div>
+
+            <Accordion
+              type="single"
+              collapsible
+              value={accordionOpen as "item-1" | undefined}
+              onValueChange={(value) =>
+                setAccordionOpen(value as "item-1" | null | undefined)
+              }
+            >
+              {/* <Accordion defaultOpen={!selectedCategoryId}> */}
+
+              <AccordionItem
+                value="item-1"
+                className="bg-yellow-custom text-green-custom py-2 pb-1 px-4 rounded-xl border-double border-7 border-orange-custom"
+              >
+                {selectedCategoryObject ? (
+                  <div>
+                    <AccordionTrigger className="text-clamp-h4">
+                      {selectedCategoryObject.name}
+                    </AccordionTrigger>
+
+                    <AccordionContent className="pb-4 max-md:text-center">
+                      {selectedCategoryObject.description
+                        .split("\r\n\r\n")
+                        .map((line, index) => (
+                          <React.Fragment key={index}>
+                            <p>{line}</p>
+                          </React.Fragment>
+                        ))}
+                    </AccordionContent>
+                  </div>
+                ) : (
+                  <div>
+                    <AccordionTrigger className="text-clamp-h4">
+                      Lite roliga fakta
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4 max-md:text-center">
+                      <p>{defaultCategoryObject?.description}</p>
+                    </AccordionContent>
+                  </div>
+                )}
+              </AccordionItem>
+            </Accordion>
+          </ContentSectionNarrow>
+          <ContentSection>
+            <div>
+              <ul className="grid md:grid-cols-2 lg:grid-cols-3 justify-items-center gap-6">
+                {products ? (
+                  filteredProducts.map((product) => (
+                    <li
+                      key={product.id}
+                      className="border-rounded bg-yellow-custom"
+                    >
+                      <Link to={`/product/${product.id}`}>
+                        {product.images && product.images?.length > 0 && (
+                          <>
+                            <div className="flex flex-col justify-between h-full">
+                              {wordpressImages.find(
+                                (wpImg) => wpImg.id === product.images[0].id
+                              )?.media_details.sizes.medium && ( // Check if medium size exists
+                                <div className="flex">
+                                  <img
+                                    className="rounded-t-[14px]"
+                                    width="600"
+                                    src={
+                                      wordpressImages.find(
+                                        (wpImg) =>
+                                          wpImg.id === product.images[0].id
+                                      )?.media_details.sizes.medium.source_url
+                                    }
+                                    alt="Product banner"
+                                  />
+                                </div>
+                              )}
+                              {/* If medium size is not available use the default */}
+                              {!wordpressImages.find(
+                                (wpImg) => wpImg.id === product.images[0].id
+                              )?.media_details.sizes.medium && (
+                                <img
+                                  width="300"
+                                  src={product.images[0].src}
+                                  alt="Product banner"
+                                />
+                              )}
+                              <div></div>
+                              <div className="flex items-center justify-center h-16">
+                                <h3 className="text-clamp-h6 text-green-custom">
+                                  {product.name}
+                                </h3>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <li>No products found</li>
+                )}
+              </ul>
+            </div>
+          </ContentSection>
+        </>
       )}
     </>
   );

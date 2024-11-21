@@ -9,7 +9,7 @@ export const Layout = () => {
         <Header></Header>
 
         <main>
-          <div className="max-w-screen-xl mx-auto max-[1330px]:px-4 mt-10 mb-16">
+          <div className="flex flex-col max-w-screen-xl mx-auto max-[1330px]:px-4 mt-10 mb-16">
             <Outlet></Outlet>
           </div>
         </main>

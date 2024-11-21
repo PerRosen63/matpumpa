@@ -5,7 +5,7 @@
 
 @layer base {
   p {
-    @apply mb-4 md:text-[1.1rem];
+    @apply mb-4 md:text-[1.063rem] leading-[1.4];
   }
   a {
     @apply text-yellow-custom-link; 
@@ -44,7 +44,7 @@
     @apply py-3 pt-4 text-yellow-custom bg-orange-custom hover:border-orange-custom cursor-default;
   }
   .checkbox-label-all:has(input:checked) {
-    @apply opacity-0 cursor-default;
+    @apply opacity-0 max-md:hidden cursor-default;
   }
 }
 

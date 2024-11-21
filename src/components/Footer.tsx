@@ -8,7 +8,7 @@ export const Footer = () => {
         <section className="py-3 max-w-screen-xl mx-auto flex flex-col md:flex-row">
           <article className="my-5 px-5 flex flex-col md:flex-1 items-center md:items-start">
             <h4 className="mb-3">Kontakta oss!</h4>
-            <div className="flex flex-col gap-y-1">
+            <div className="flex flex-col gap-y-1 max-md:items-center">
               <div>
                 <Link className="flex flex-row items-center" to={"#"}>
                   <Phone

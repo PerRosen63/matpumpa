@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Wave } from "../assets/Wave";
 import { Hamburger } from "../assets/Hamburger";
 import AppContext from "../context/AppContext";
+
+import { CartIcon } from "./CartIcon";
 
 export const Header = () => {
   const { amountTotal } = useContext(AppContext) ?? { amountTotal: 0 };
@@ -41,6 +43,14 @@ export const Header = () => {
               >
                 <Hamburger isOpen={isOpen}></Hamburger>
               </button>
+            </div>
+            <div className="">
+              <Link
+                to={"/cart/"}
+                className="lg:hidden absolute right-0 bottom-0 pr-5 pb-2 font-sans leading-[2.75rem] px-4"
+              >
+                <CartIcon></CartIcon>
+              </Link>
             </div>
 
             <div>
@@ -117,7 +127,12 @@ export const Header = () => {
                       }
                       to={"/cart"}
                     >
-                      Varukorg: {amountTotal} st
+                      <span className="max-lg:hidden">
+                        <CartIcon></CartIcon>
+                      </span>
+                      <span className="lg:hidden">
+                        Varukorg: {amountTotal} st
+                      </span>
                     </NavLink>
                   </li>
                 </ul>

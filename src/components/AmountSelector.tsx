@@ -33,17 +33,17 @@ export const AmountSelector: React.FC<AmountSelectorProps> = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
+      <div className="mt-3 text-xl flex flex-row gap-3 max-lg:justify-center align-middle">
         <button
-          className="bg-yellow-custom text-black p-2"
+          className="bg-yellow-custom text-black px-5 py-3"
           onClick={handleDecrease}
           disabled={quantity <= 1}
         >
           -
         </button>
-        <span className="p-2">{quantity}</span>
+        <span className="px-3 pt-3">{quantity}</span>
         <button
-          className="bg-yellow-custom text-black p-2"
+          className="bg-yellow-custom text-black px-5 py-3"
           onClick={handleIncrease}
           disabled={quantity >= maxQuantity}
         >

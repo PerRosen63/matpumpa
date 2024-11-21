@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import AppContext /* , { CartItem } */ from "../context/AppContext";
 import { AmountSelector } from "./AmountSelector";
 import { TopLevel } from "../models/IProduct";
+import { Button } from "@/style_components/Button";
 
 export const ProductOrderForm = () => {
   const { selectedProduct, productVariations, preliminaryCart } = useContext(
@@ -29,6 +30,8 @@ export const ProductOrderForm = () => {
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
+  const [showAddedMessage, setShowAddedMessage] = useState(false); // New state
+
   const variations = selectedProduct
     ? productVariations[selectedProduct.id] || []
     : [];
@@ -53,6 +56,14 @@ export const ProductOrderForm = () => {
     }
 
     setSelectedQuantity(1);
+
+    // Show the message:
+    setShowAddedMessage(true);
+
+    // Hide the message after a delay (e.g., 3 seconds):
+    setTimeout(() => {
+      setShowAddedMessage(false);
+    }, 3000);
   };
 
   const getAvailableStock = (
@@ -99,13 +110,15 @@ export const ProductOrderForm = () => {
   return (
     <>
       {variations.length > 0 && (
-        <div>
+        <div className="max-lg:text-center">
           <select
-            className="bg-green-custom"
+            className="mb-2 p-2 bg-yellow-custom text-green-custom border-double border-7 border-orange-custom rounded-xl"
             value={selectedVariationId ?? ""}
             onChange={handleVariationChange}
           >
-            <option value="">Välj pumpa:</option>
+            <option className="" value="">
+              Välj pumpa:
+            </option>
             {variations.map(
               (variation) =>
                 variation.stock_quantity > 0 &&
@@ -127,10 +140,14 @@ export const ProductOrderForm = () => {
           </select>
 
           <p>
-            Pris:{" "}
             {selectedVariationId !== undefined &&
-              variations.find((v) => v.id === selectedVariationId)?.price +
-                `:-`}
+            variations.find((v) => v.id === selectedVariationId) ? ( // Check if a variation is found
+              `Pris: ${
+                variations.find((v) => v.id === selectedVariationId)?.price
+              }:-`
+            ) : (
+              <p>&nbsp;</p>
+            )}
           </p>
 
           <strong>
@@ -141,7 +158,7 @@ export const ProductOrderForm = () => {
         </div>
       )}
 
-      <div>
+      <div className="max-lg:text-center">
         <strong>
           {!variations.length &&
             (selectedProduct?.stock_status === "instock"
@@ -169,13 +186,26 @@ export const ProductOrderForm = () => {
             }}
           />
         </div>
-        <button
+        <Button
           disabled={isAddToCartDisabled}
-          className="bg-yellow-custom text-black p-5 m-5"
+          className="mt-5"
           onClick={() => handleAddToCart(selectedQuantity)}
         >
-          Add to Cart
-        </button>
+          Lägg i varukorg
+        </Button>
+        {/* <button
+          disabled={isAddToCartDisabled}
+          className="bg-yellow-custom text-black p-5 my-5"
+          onClick={() => handleAddToCart(selectedQuantity)}
+        >
+          Lägg i varukorg
+        </button> */}
+
+        <div className="max-lg:mt-3 lg:relative">
+          {showAddedMessage && (
+            <div className="lg:absolute top-3">Lagd i varukorg!</div>
+          )}
+        </div>
       </div>
     </>
   );
