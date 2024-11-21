@@ -29,6 +29,7 @@ interface ImageSizes {
 
 interface WordPressImage {
   id: number;
+  alt_text: string;
   media_details: {
     sizes: ImageSizes;
   };

@@ -230,7 +230,7 @@ export function Products() {
                                           wpImg.id === product.images[0].id
                                       )?.media_details.sizes.medium.source_url
                                     }
-                                    alt="Product banner"
+                                    alt={product.images[0].alt}
                                   />
                                 </div>
                               )}

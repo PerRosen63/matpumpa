@@ -39,7 +39,7 @@ export const ProductPresentation = () => {
                     (wpImg) => wpImg.id === selectedProduct.images[0].id
                   )?.media_details.sizes.large.source_url
                 }
-                alt="Product banner"
+                alt={selectedProduct.images[0].alt}
               />
             </div>
           )}
@@ -50,7 +50,7 @@ export const ProductPresentation = () => {
             <img
               width="1100"
               src={selectedProduct.images[0].src}
-              alt="Product banner"
+              alt={selectedProduct.images[0].alt}
             />
           )}
         </div>
@@ -66,7 +66,7 @@ export const ProductPresentation = () => {
                     key={index}
                     width="600"
                     src={wpImage.media_details.sizes.thumbnail.source_url}
-                    alt="Product banner"
+                    alt={wpImage.alt_text}
                   />
                 );
               } else {
