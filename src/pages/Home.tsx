@@ -24,7 +24,7 @@ export const Home = () => {
                 Beställ de godaste sorterna!
               </p>
               <Link to={"/products/"}>
-                <Button className="">
+                <Button disabled={false}>
                   Till webbshop
                   <FormNext
                     color="#fffcdf"
@@ -40,7 +40,7 @@ export const Home = () => {
                 Vad är matpumpa?
               </h4>
               <Link to={"/about/"}>
-                <Button className="">
+                <Button disabled={false}>
                   Läs mer
                   <FormNext
                     color="#fffcdf"
@@ -56,7 +56,7 @@ export const Home = () => {
                 Odlingstips & recept
               </h4>
               <Link to={"/growing/"}>
-                <Button className="">
+                <Button disabled={false}>
                   Läs mer
                   <FormNext
                     color="#fffcdf"

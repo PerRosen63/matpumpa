@@ -17,7 +17,11 @@ export const About = () => {
         </p>
         <div className="flex max-md:flex-col my-10 max-md:items-center justify-between gap-y-1">
           <Link to={"/product-category/curcubita-pepo/"}>
-            <Button className="max-md:min-w-64 lg:min-w-64" variant="secondary">
+            <Button
+              className="max-md:min-w-64 lg:min-w-64"
+              variant="secondary"
+              disabled={false}
+            >
               <span className="">Curcubita Pepo</span>
               <FormNext
                 color="#626a40"
@@ -26,7 +30,11 @@ export const About = () => {
             </Button>
           </Link>
           <Link to={"/product-category/curcubita-maxima/"}>
-            <Button className="max-md:min-w-64 lg:min-w-64" variant="secondary">
+            <Button
+              className="max-md:min-w-64 lg:min-w-64"
+              variant="secondary"
+              disabled={false}
+            >
               <span className="">Curcubita Maxima</span>
               <FormNext
                 color="#626a40"
@@ -35,7 +43,11 @@ export const About = () => {
             </Button>
           </Link>
           <Link to={"/product-category/curcubita-moschata/"}>
-            <Button className="max-md:min-w-64 lg:min-w-64" variant="secondary">
+            <Button
+              className="max-md:min-w-64 lg:min-w-64"
+              variant="secondary"
+              disabled={false}
+            >
               <span className="">Curcubita Moschata</span>
               <FormNext
                 color="#626a40"
