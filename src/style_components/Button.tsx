@@ -18,7 +18,7 @@ export const Button = ({ className, variant, ...props }: ButtonProps) => {
 };
 
 const buttonVariants = cva(
-  "py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl transition",
+  "py-3 pt-4 px-4 rounded-xl font-sans font-bold text-xl transition",
   {
     variants: {
       variant: {

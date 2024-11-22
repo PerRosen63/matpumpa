@@ -111,10 +111,14 @@ export const ProductOrderForm = () => {
     <>
       {variations.length > 0 && (
         <div className="max-lg:text-center">
+          <label htmlFor="pumpor" className="block">
+            Olika vikter!
+          </label>
           <select
             className="mb-2 p-2 bg-yellow-custom text-green-custom border-double border-7 border-orange-custom rounded-xl"
             value={selectedVariationId ?? ""}
             onChange={handleVariationChange}
+            id="pumpor"
           >
             <option className="" value="">
               Välj pumpa:
@@ -162,25 +166,17 @@ export const ProductOrderForm = () => {
         <strong>
           {!variations.length &&
             (selectedProduct?.stock_status === "instock"
-              ? // ? selectedProduct?.stock_quantity + " i lager"
-                getAvailableStock(selectedProduct.id) + " i lager"
+              ? getAvailableStock(selectedProduct.id) + " i lager"
               : "Slut i lager")}
         </strong>
         <div>
           <span className="block mb-2">Välj antal: </span>
           <AmountSelector
-            /* maxQuantity={
-              selectedVariationId
-                ? variations.find((v) => v.id === selectedVariationId)
-                    ?.stock_quantity || 0
-                : selectedProduct?.stock_quantity || 0
-            } */
             maxQuantity={getAvailableStock(
               selectedProduct?.id || 0,
               selectedVariationId
             )}
             onQuantityChange={(newQuantity) => {
-              // Here you can update the quantity in your cart or state
               setSelectedQuantity(newQuantity);
               // console.log("New quantity:", newQuantity);
             }}
@@ -193,13 +189,6 @@ export const ProductOrderForm = () => {
         >
           Lägg i varukorg
         </Button>
-        {/* <button
-          disabled={isAddToCartDisabled}
-          className="bg-yellow-custom text-black p-5 my-5"
-          onClick={() => handleAddToCart(selectedQuantity)}
-        >
-          Lägg i varukorg
-        </button> */}
 
         <div className="max-lg:mt-3 lg:relative">
           {showAddedMessage && (

@@ -40,17 +40,17 @@ export function Products() {
 
   const [accordionOpen, setAccordionOpen] = useState<
     "item-1" | null | undefined
-  >(undefined); // Initial state based on selectedCategoryId
+  >(undefined);
 
   const handleCategoryChange = (categoryId: number | null) => {
     if (categoryId === null) {
-      const animationDuration = 0; // Adjust as needed
+      const animationDuration = 0; // Delay, fix for animation happening too fast
 
       setTimeout(() => {
         setAccordionOpen(null);
       }, animationDuration);
     } else {
-      setAccordionOpen(null); // reset accordion on category change FUNKAR
+      setAccordionOpen(null); // reset accordion on category change
     }
     if (categoryId) {
       const category = categories.find((cat) => cat.id === categoryId);
@@ -81,9 +81,8 @@ export function Products() {
       return null;
     }
     const category = categories.find((category) => category.id === 15);
-    // console.log("Default category description:", category?.description); // Log only once
     return category;
-  }, [categoriesFetched, categories]); // Recalculate only if 'categories' changes
+  }, [categoriesFetched, categories]);
 
   return (
     <>
@@ -111,7 +110,7 @@ export function Products() {
                     className="opacity-0"
                     type="radio"
                     name="categories"
-                    value="22" // Replace with actual category ID
+                    value="22" // category ID
                     checked={selectedCategoryId === 22}
                     onChange={() => handleCategoryChange(22)}
                   />
@@ -169,8 +168,6 @@ export function Products() {
                 setAccordionOpen(value as "item-1" | null | undefined)
               }
             >
-              {/* <Accordion defaultOpen={!selectedCategoryId}> */}
-
               <AccordionItem
                 value="item-1"
                 className="bg-yellow-custom text-green-custom py-2 pb-1 px-4 rounded-xl border-double border-7 border-orange-custom"
@@ -230,7 +227,8 @@ export function Products() {
                                           wpImg.id === product.images[0].id
                                       )?.media_details.sizes.medium.source_url
                                     }
-                                    alt={product.images[0].alt}
+                                    /* alt={product.images[0].alt} */ //Lighthouse detect
+                                    alt="pumpkin"
                                   />
                                 </div>
                               )}

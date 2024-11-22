@@ -2,7 +2,11 @@ export const Hamburger = ({ isOpen }: { isOpen: boolean }) => {
   // console.log(isOpen);
   return (
     <>
-      <svg className="h-11 w-11 fill-current" viewBox="0 0 24 24">
+      <svg
+        aria-label="mobile menu toggle"
+        className="h-11 w-11 fill-current"
+        viewBox="0 0 24 24"
+      >
         {isOpen ? (
           <path
             fillRule="evenodd"

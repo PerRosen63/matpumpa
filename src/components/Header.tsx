@@ -32,7 +32,7 @@ export const Header = () => {
                   width="250"
                   height="auto"
                   src="https://mfdm.se/woo/wp-content/uploads/logga.svg"
-                  alt=""
+                  alt="logotype"
                 />
               </NavLink>
             </div>

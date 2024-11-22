@@ -40,16 +40,16 @@ export const Product = () => {
             <ol className="breadcrumb flex">
               <li className="breadcrumb-item">
                 <Link to="/products/">Alla</Link>
+                <span className="mx-2">/</span>
               </li>
-              <span className="mx-2">/</span>
               {selectedProduct?.categories.map((category) => (
                 <li key={category.id}>
                   <Link to={`/product-category/${category.slug}`}>
                     {category.name}
                   </Link>
+                  <span className="mx-2">/</span>
                 </li>
               ))}
-              <span className="mx-2">/</span>
               <li>{selectedProduct?.name}</li>
             </ol>
           </nav>

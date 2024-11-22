@@ -52,10 +52,10 @@ export const Footer = () => {
               </div>
             </nav>
             <div>
-              <Link to={"#"}>Köpvillkor</Link>
+              <Link to={"/"}>Köpvillkor</Link>
             </div>
             <div>
-              <Link to={"#"}>Integritetspolicy</Link>
+              <Link to={"/"}>Integritetspolicy</Link>
             </div>
           </article>
           <article className="my-5 px-5 flex flex-col md:max-lg:max-w-56 md:flex-1 md:order-1 items-center justify-center flex-wrap md:border-x">
