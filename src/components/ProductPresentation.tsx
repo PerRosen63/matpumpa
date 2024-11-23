@@ -4,27 +4,12 @@ import { ProductOrderForm } from "./ProductOrderForm";
 import parse from "html-react-parser";
 
 export const ProductPresentation = () => {
-  const { selectedProduct, loading, wordpressImages } = useContext(
-    AppContext
-  ) ?? {
+  const { selectedProduct, wordpressImages } = useContext(AppContext) ?? {
     selectedProduct: null,
-    loading: true,
     wordpressImages: [],
   };
 
-  return loading ? (
-    <div className="loaderText flex flex-col items-center">
-      <h4>Ett ögonblick. Vi hämtar produkten...</h4>{" "}
-      <div className="pt-4">
-        <img
-          width="75"
-          src="https://mfdm.se/woo/wp-content/uploads/pumpkin.png"
-          alt="pumpa"
-          className="animate-spin"
-        />
-      </div>
-    </div>
-  ) : selectedProduct ? (
+  return selectedProduct ? (
     <div id="productWrapper" className="flex gap-8 max-lg:flex-col">
       <article className="lg:w-1/2">
         <div>

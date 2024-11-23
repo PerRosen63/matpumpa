@@ -261,25 +261,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     }
   }, [baseUrl, consumerKey, consumerSecret]);
 
-  /* const fetchOrder = async (id: number) => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${baseUrl}/orders/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
-      );
-
-      const data = await response.json();
-
-      setSelectedOrder(data);
-
-      console.log(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  }; */
-
   useEffect(() => {
     const fetchAllImages = async () => {
       let allImages: WordPressImage[] = [];

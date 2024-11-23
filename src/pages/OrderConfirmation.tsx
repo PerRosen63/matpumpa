@@ -18,7 +18,7 @@ export const OrderConfirmation = () => {
       // Redirect after a delay (optional)
       setTimeout(() => {
         navigate("/");
-      }, 15000);
+      }, 5000);
     }
   }, [orderId, navigate]);
 
@@ -29,7 +29,6 @@ export const OrderConfirmation = () => {
           <div>
             <h2 className="text-2xl font-bold mb-4">Skickar order...</h2>
             <div className="loader"></div>{" "}
-            {/* Replace with your preferred loader component */}
           </div>
         )}
 

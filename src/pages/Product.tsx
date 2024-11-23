@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { ProductPresentation } from "../components/ProductPresentation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import { TitleSection } from "../style_components/TitleSection";
 import { ContentSection } from "@/style_components/ContentSection";
@@ -13,8 +13,6 @@ export const Product = () => {
     loading: true,
   };
 
-  const [isProductLoaded, setIsProductLoaded] = useState(false);
-
   useEffect(() => {
     if (
       id &&
@@ -25,13 +23,19 @@ export const Product = () => {
     }
   }, [id, fetchProduct, selectedProduct]);
 
-  useEffect(() => {
-    if (!loading) {
-      setIsProductLoaded(true);
-    }
-  }, [loading]);
-
-  return (
+  return loading ? (
+    <div className="loaderText flex flex-col items-center">
+      <h4>Ett ögonblick. Vi hämtar produkten...</h4>{" "}
+      <div className="pt-4">
+        <img
+          width="75"
+          src="https://mfdm.se/woo/wp-content/uploads/pumpkin.png"
+          alt="pumpa"
+          className="animate-spin"
+        />
+      </div>
+    </div>
+  ) : (
     <>
       <TitleSection>{selectedProduct?.name}</TitleSection>
       <ContentSection>
@@ -55,7 +59,7 @@ export const Product = () => {
           </nav>
         </div>
 
-        {isProductLoaded && <ProductPresentation></ProductPresentation>}
+        <ProductPresentation></ProductPresentation>
       </ContentSection>
     </>
   );
