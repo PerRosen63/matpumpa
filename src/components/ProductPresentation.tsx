@@ -28,7 +28,7 @@ export const ProductPresentation = () => {
               />
             </div>
           )}
-          {/* If medium size is not available use the default */}
+          {/* If large size is not available use the default */}
           {!wordpressImages.find(
             (wpImg) => wpImg.id === selectedProduct.images[0].id
           )?.media_details.sizes.large && (
@@ -39,7 +39,8 @@ export const ProductPresentation = () => {
             />
           )}
         </div>
-        {selectedProduct?.images.length > 1 && (
+
+        {selectedProduct?.images.length > 1 && ( // Gallery
           <div className="grid grid-cols-4">
             {selectedProduct?.images.map((image, index) => {
               const wpImage = wordpressImages.find(
@@ -49,14 +50,22 @@ export const ProductPresentation = () => {
                 return (
                   <img
                     key={index}
-                    width="600"
+                    width="300"
                     src={wpImage.media_details.sizes.thumbnail.source_url}
                     alt={wpImage.alt_text}
                   />
                 );
               } else {
-                // Handle the case where wpImage or medium size is not found
-                return null; // Or display a placeholder image
+                // If thumbnail size is not found pick full
+                return (
+                  <img
+                    key={index}
+                    width="300"
+                    height="300"
+                    src={wpImage?.source_url}
+                    alt={wpImage?.alt_text}
+                  />
+                );
               }
             })}
           </div>
@@ -71,6 +80,6 @@ export const ProductPresentation = () => {
       </article>
     </div>
   ) : (
-    <div>Product not found</div>
+    <div>Produkt hittas ej</div>
   );
 };

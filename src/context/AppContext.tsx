@@ -25,6 +25,9 @@ interface ImageSizes {
   large: {
     source_url: string;
   };
+  full: {
+    source_url: string;
+  };
 }
 
 interface WordPressImage {
@@ -33,6 +36,7 @@ interface WordPressImage {
   media_details: {
     sizes: ImageSizes;
   };
+  source_url: string;
 }
 
 export interface Variation {
