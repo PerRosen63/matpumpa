@@ -139,7 +139,11 @@ export const ProductCart = () => {
               Skicka order
             </Button>
 
-            <button className="mt-3" onClick={clearCart}>
+            <button
+              className="mt-3 disabled:opacity-40"
+              onClick={clearCart}
+              disabled={preliminaryCart.length === 0}
+            >
               <FormRefresh
                 color="plain"
                 size="2rem"
