@@ -1,4 +1,3 @@
-// import config from "../config.ts";
 import { useContext, useEffect, useState } from "react";
 import AppContext /* , { CartItem } */ from "../context/AppContext";
 import { AmountSelector } from "./AmountSelector";
@@ -153,11 +152,14 @@ export const ProductOrderForm = () => {
           </select>
 
           <p>
+            {/* Conditionally render price only if available stock > 0: */}
             {selectedVariationId !== undefined &&
-            variations.find((v) => v.id === selectedVariationId) ? ( // Check if a variation is found
+            variations.find((v) => v.id === selectedVariationId) &&
+            getAvailableStock(selectedProduct?.id || 0, selectedVariationId) >
+              0 ? (
               `Pris: ${
                 variations.find((v) => v.id === selectedVariationId)?.price
-              }:-`
+              }:-/st`
             ) : (
               <p>&nbsp;</p>
             )}
@@ -172,18 +174,24 @@ export const ProductOrderForm = () => {
       )}
 
       <div className="max-lg:text-center">
+        {/*Simple product price & stock*/}
+        <p>
+          {!variations.length && selectedProduct?.stock_status === "instock" ? (
+            `Pris: ${selectedProduct.price}:-`
+          ) : (
+            <p>&nbsp;</p>
+          )}
+        </p>
         <strong>
           {!variations.length &&
             (selectedProduct?.stock_status === "instock"
               ? getAvailableStock(selectedProduct.id) + " i lager"
               : "Slut i lager")}
         </strong>
+
         <div>
           <span className="block mb-2">
-            {!variations.length &&
-              (selectedProduct?.stock_status === "instock"
-                ? getAvailableStock(selectedProduct.id) + "Välj antal:"
-                : "")}
+            {selectedProduct?.stock_status === "instock" ? "Välj antal:" : ""}
           </span>
           <AmountSelector
             maxQuantity={getAvailableStock(
