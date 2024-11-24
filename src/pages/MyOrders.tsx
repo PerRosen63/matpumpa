@@ -6,11 +6,8 @@ import { MyOrder } from "./MyOrder";
 import { TitleSection } from "../style_components/TitleSection";
 
 export const MyOrders = () => {
-  const {
-    fetchOrders = async () => {},
-    orders = [],
-    // hasFetchedOrders,
-  } = useContext(AppContext) ?? {};
+  const { fetchOrders = async () => {}, orders = [] } =
+    useContext(AppContext) ?? {};
 
   const [isLoading, setIsLoading] = useState(true);
   const [showOrderList, setShowOrderList] = useState(true);
@@ -18,15 +15,13 @@ export const MyOrders = () => {
 
   useEffect(() => {
     const getOrders = async () => {
-      //if (!hasFetchedOrders) {
       setIsLoading(true);
       await fetchOrders();
       setIsLoading(false);
-      //}
     };
 
     getOrders();
-  }, [fetchOrders /* , hasFetchedOrders */]);
+  }, [fetchOrders]);
 
   // Access the id from the URL parameters
   const { id } = useParams<{ id: string }>();

@@ -54,10 +54,16 @@ export const MyOrder: React.FC<OrderProps> = ({ order, setShowOrderList }) => {
                   {
                     <div>
                       {item.product_id > 0 ? (
-                        <img width="100" src={modifiedSrc} alt={item.name} />
+                        <img
+                          width="100"
+                          height="100"
+                          src={modifiedSrc}
+                          alt={item.name}
+                        />
                       ) : (
                         <img
                           width="100"
+                          height="100"
                           src="https://mfdm.se/woo/wp-content/uploads/woocommerce-placeholder-300x300.png"
                           alt="placeholder missing image"
                         />

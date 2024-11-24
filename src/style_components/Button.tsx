@@ -23,7 +23,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "py-4 pt-5 text-yellow-custom bg-orange-custom border-yellow-custom border-5 hover:border-double hover:border-yellow-custom hover:ease-in-out duration-1000",
+          "py-4 pt-5 text-yellow-custom bg-orange-custom border-yellow-custom border-5 hover:border-double hover:border-yellow-custom hover:ease-in-out duration-1000 disabled:opacity-40 disabled:hover:border-solid",
         secondary:
           "bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom hover:ease-out duration-1000",
       },

@@ -14,9 +14,7 @@ export const AmountSelector: React.FC<AmountSelectorProps> = ({
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
-    //  if (quantity > maxQuantity) {
     setQuantity(initialQuantity);
-    //  }
   }, [initialQuantity, maxQuantity]);
 
   const handleIncrease = () => {
@@ -35,15 +33,23 @@ export const AmountSelector: React.FC<AmountSelectorProps> = ({
     <>
       <div className="text-xl flex flex-row gap-3 max-lg:justify-center align-middle">
         <button
-          className="bg-yellow-custom text-black px-5 py-3"
+          className="bg-yellow-custom text-black px-5 py-3 disabled:opacity-40"
           onClick={handleDecrease}
           disabled={quantity <= 1}
         >
           -
         </button>
-        <span className="w-8 py-3 text-center">{quantity}</span>
+        <span
+          className={
+            quantity > maxQuantity
+              ? "opacity-40 w-8 py-3 text-center"
+              : "w-8 py-3 text-center"
+          }
+        >
+          {quantity}
+        </span>
         <button
-          className="bg-yellow-custom text-black px-5 py-3"
+          className="bg-yellow-custom text-black px-5 py-3 disabled:opacity-40"
           onClick={handleIncrease}
           disabled={quantity >= maxQuantity}
         >

@@ -156,7 +156,7 @@ export function Products() {
                   size="2rem"
                   className="ml-[-0.6rem] [&>path]:stroke-yellow-custom-link"
                 ></FormRefresh>
-                <p>Visa alla</p>
+                <p>Visa alla kategorier</p>
               </label>
             </div>
 
@@ -217,10 +217,11 @@ export function Products() {
                               {wordpressImages.find(
                                 (wpImg) => wpImg.id === product.images[0].id
                               )?.media_details.sizes.medium && ( // Check if medium size exists
-                                <div className="flex">
+                                <div className="flex aspect-[399/299]">
                                   <img
                                     className="rounded-t-[14px]"
-                                    width="600"
+                                    width="399"
+                                    height="auto"
                                     src={
                                       wordpressImages.find(
                                         (wpImg) =>

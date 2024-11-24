@@ -57,7 +57,7 @@ export const ProductOrderForm = () => {
 
     setSelectedQuantity(1);
 
-    // Show the message:
+    // Show the message Lagd i varukorg:
     setShowAddedMessage(true);
 
     // Hide the message after a delay (e.g., 3 seconds):
@@ -104,6 +104,7 @@ export const ProductOrderForm = () => {
 
   const isAddToCartDisabled =
     (variations.length > 0 && selectedVariationId === undefined) ||
+    selectedQuantity === 0 ||
     selectedQuantity >
       getAvailableStock(selectedProduct?.id || 0, selectedVariationId);
 
@@ -111,14 +112,22 @@ export const ProductOrderForm = () => {
     <>
       {variations.length > 0 && (
         <div className="max-lg:text-center">
-          <label htmlFor="pumpor" className="block">
-            Olika vikter!
+          <label
+            htmlFor="pumpor"
+            className={
+              selectedProduct?.stock_status !== "instock"
+                ? "opacity-40 block"
+                : "block"
+            }
+          >
+            Välj vikt!
           </label>
           <select
             className="mb-2 p-2 bg-yellow-custom text-green-custom border-double border-7 border-orange-custom rounded-xl"
             value={selectedVariationId ?? ""}
             onChange={handleVariationChange}
             id="pumpor"
+            disabled={selectedProduct?.stock_status !== "instock"}
           >
             <option className="" value="">
               Välj pumpa:
@@ -170,7 +179,12 @@ export const ProductOrderForm = () => {
               : "Slut i lager")}
         </strong>
         <div>
-          <span className="block mb-2">Välj antal: </span>
+          <span className="block mb-2">
+            {!variations.length &&
+              (selectedProduct?.stock_status === "instock"
+                ? getAvailableStock(selectedProduct.id) + "Välj antal:"
+                : "")}
+          </span>
           <AmountSelector
             maxQuantity={getAvailableStock(
               selectedProduct?.id || 0,
