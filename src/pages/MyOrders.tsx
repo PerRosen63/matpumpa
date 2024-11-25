@@ -34,6 +34,7 @@ export const MyOrders = () => {
       setShowOrderList(false);
     } else if (location.pathname === "/orders") {
       setShowOrderList(true);
+      window.scrollTo(0, 0);
     }
   }, [location]);
 

@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import AppContext from "../context/AppContext";
 import React from "react";
 import { TitleSection } from "../style_components/TitleSection";
@@ -22,6 +22,10 @@ export function Products() {
       categoriesFetched: false,
       wordpressImages: [],
     };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const { categorySlug } = useParams();
   const navigate = useNavigate();

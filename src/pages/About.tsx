@@ -4,8 +4,13 @@ import { TitleSection } from "../style_components/TitleSection";
 import { ContentSectionNarrow } from "../style_components/ContentSectionNarrow";
 import { Link } from "react-router-dom";
 import { ContentSection } from "../style_components/ContentSection";
+import { useEffect } from "react";
 
 export const About = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <TitleSection>Om pumpor</TitleSection>

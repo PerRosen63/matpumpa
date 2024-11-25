@@ -3,8 +3,13 @@ import { Button } from "../style_components/Button";
 import { TitleSection } from "../style_components/TitleSection";
 import { ContentSection } from "../style_components/ContentSection";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <TitleSection>matpumpa.se</TitleSection>

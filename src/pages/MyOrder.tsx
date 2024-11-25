@@ -13,6 +13,10 @@ export const MyOrder: React.FC<OrderProps> = ({ order, setShowOrderList }) => {
   const orderId = parseInt(id!, 10);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     setShowOrderList(false);
   }, [setShowOrderList]);
 

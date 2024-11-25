@@ -14,6 +14,10 @@ export const Product = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (
       id &&
       !isNaN(parseInt(id, 10)) &&
