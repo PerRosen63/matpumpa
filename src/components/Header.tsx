@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Wave } from "../assets/Wave";
 import { Hamburger } from "../assets/Hamburger";
@@ -8,8 +8,8 @@ import { CartIcon } from "./CartIcon";
 
 export const Header = () => {
   const { amountTotal } = useContext(AppContext) ?? { amountTotal: 0 };
-
   const [isOpen, setIsOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -18,6 +18,32 @@ export const Header = () => {
   const closeMenu = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click occurred outside the mobile nav and the hamburger button
+      if (
+        navRef.current &&
+        !navRef.current.contains(event.target as Node) &&
+        !(event.target instanceof HTMLButtonElement)
+      ) {
+        setIsOpen(false); // Close the mobile nav
+      }
+    };
+
+    if (isOpen) {
+      // Only add listener if menu is open
+      document.addEventListener("mousedown", handleClickOutside); // Use mousedown to catch clicks on buttons too
+    } else {
+      // Clean up on close
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    // Clean up the event listener when the component unmounts or isOpen changes
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]); // Add isOpen to the dependency array
 
   return (
     <>
@@ -39,7 +65,7 @@ export const Header = () => {
             <div>
               <button
                 onClick={toggleMenu}
-                className="fixed bg-green-custom right-3 top-3 z-10 lg:hidden text-yellow-custom hover:text-white focus:text-white focus:outline-none"
+                className="fixed bg-green-custom shadow-md right-3 top-3 z-10 lg:hidden text-yellow-custom hover:text-white focus:text-white focus:outline-none"
               >
                 <Hamburger isOpen={isOpen}></Hamburger>
               </button>
@@ -55,7 +81,8 @@ export const Header = () => {
 
             <div>
               <nav
-                className={`w-full max-lg:fixed left-0 top-0 bg-green-custom max-md:w-full max-lg:border-b-2 border-gray-700 ${
+                ref={navRef}
+                className={`w-full max-lg:fixed left-0 top-0 bg-green-custom max-md:w-full max-lg:shadow-md border-gray-700 ${
                   isOpen ? "block" : "max-lg:hidden max-lg:sr-only"
                 }`}
               >

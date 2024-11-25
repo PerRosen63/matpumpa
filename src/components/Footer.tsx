@@ -3,11 +3,11 @@ import { Ascend, MailOption, MapLocation, Phone } from "grommet-icons";
 import { useEffect, useState } from "react";
 
 export const Footer = () => {
+  // Scroll to top appears on scroll
   const [showScrollToTop, setShowScrollToTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if the user has scrolled down more than one page height
       if (window.scrollY > 700) {
         setShowScrollToTop(true);
       } else {
@@ -15,13 +15,12 @@ export const Footer = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll); // Add the event listener
+    window.addEventListener("scroll", handleScroll);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);
 
   return (
     <>
@@ -107,7 +106,7 @@ export const Footer = () => {
                   behavior: "smooth", // Add smooth behavior
                 })
               }
-              className="fixed bottom-4 right-4 p-2 bg-green-custom/40"
+              className="fixed bottom-3 right-3 p-2 bg-green-custom/70"
             >
               <Ascend
                 color="plain"
