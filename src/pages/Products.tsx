@@ -92,7 +92,7 @@ export function Products() {
     <>
       <TitleSection>Köp våra matpumpor!</TitleSection>
       {loading ? (
-        <div className="loaderText flex flex-col items-center">
+        <div className="loaderText flex flex-col items-center text-center">
           <h4>Ett ögonblick. Vi hämtar produkter...</h4>{" "}
           <div className="pt-4">
             <img
