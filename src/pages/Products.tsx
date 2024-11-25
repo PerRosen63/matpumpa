@@ -217,10 +217,10 @@ export function Products() {
                               {wordpressImages.find(
                                 (wpImg) => wpImg.id === product.images[0].id
                               )?.media_details.sizes.medium && ( // Check if medium size exists
-                                <div className="flex aspect-[399/299]">
+                                <div className="flex">
                                   <img
-                                    className="rounded-t-[14px]"
-                                    width="399"
+                                    className="rounded-t-[14px] object-cover aspect-[4/3]"
+                                    width="400"
                                     height="auto"
                                     src={
                                       wordpressImages.find(
