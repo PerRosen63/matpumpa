@@ -39,7 +39,7 @@ export const Header = () => {
             <div>
               <button
                 onClick={toggleMenu}
-                className="absolute right-3 top-3 z-10 lg:hidden text-yellow-custom hover:text-white focus:text-white focus:outline-none"
+                className="fixed bg-green-custom right-3 top-3 z-10 lg:hidden text-yellow-custom hover:text-white focus:text-white focus:outline-none"
               >
                 <Hamburger isOpen={isOpen}></Hamburger>
               </button>
@@ -55,7 +55,7 @@ export const Header = () => {
 
             <div>
               <nav
-                className={`w-full max-lg:absolute left-0 top-0 bg-green-custom max-md:w-full max-lg:border-b-2 border-gray-700 ${
+                className={`w-full max-lg:fixed left-0 top-0 bg-green-custom max-md:w-full max-lg:border-b-2 border-gray-700 ${
                   isOpen ? "block" : "max-lg:hidden max-lg:sr-only"
                 }`}
               >

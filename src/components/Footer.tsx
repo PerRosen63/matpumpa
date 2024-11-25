@@ -1,7 +1,28 @@
 import { Link, NavLink } from "react-router-dom";
-import { MailOption, MapLocation, Phone } from "grommet-icons";
+import { Ascend, MailOption, MapLocation, Phone } from "grommet-icons";
+import { useEffect, useState } from "react";
 
 export const Footer = () => {
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if the user has scrolled down more than one page height
+      if (window.scrollY > 700) {
+        setShowScrollToTop(true);
+      } else {
+        setShowScrollToTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll); // Add the event listener
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   return (
     <>
       <footer className="mt-auto bg-black/20">
@@ -76,6 +97,26 @@ export const Footer = () => {
             </p>
           </div>
         </section>
+        <div className="relative">
+          {showScrollToTop && (
+            <button
+              onClick={() =>
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: "smooth", // Add smooth behavior
+                })
+              }
+              className="fixed bottom-4 right-4 p-2 bg-green-custom/40"
+            >
+              <Ascend
+                color="plain"
+                size="2rem"
+                className="[&>path]:fill-yellow-custom-link [&>path]:stroke-yellow-custom-link"
+              ></Ascend>
+            </button>
+          )}
+        </div>
       </footer>
     </>
   );
