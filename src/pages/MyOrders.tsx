@@ -59,13 +59,26 @@ export const MyOrders = () => {
               <div className="max-w-xl w-full mx-auto">
                 <ul>
                   {orders.map((order: Order) => (
-                    <li key={order.id}>
-                      <Link
-                        to={`/order/${order.id}`}
-                        onClick={() => setShowOrderList(false)}
-                      >
-                        <p>Order-id: {order.id}</p>
-                      </Link>
+                    <li className="flex justify-between" key={order.id}>
+                      <div>
+                        <Link
+                          to={`/order/${order.id}`}
+                          onClick={() => setShowOrderList(false)}
+                        >
+                          <p>Order-id: {order.id}</p>
+                        </Link>
+                      </div>
+                      {order.date_created && (
+                        <div className="flex">
+                          <span className="block px-2 w-24 text-right">
+                            {order.date_created.slice(0, 10)}
+                          </span>
+
+                          <span className="block px-2 w-14 text-right">
+                            {order.date_created.slice(11, 16)}
+                          </span>
+                        </div>
+                      )}
                     </li>
                   ))}
                 </ul>

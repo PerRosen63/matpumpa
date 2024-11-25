@@ -228,7 +228,7 @@ export function Products() {
                                           wpImg.id === product.images[0].id
                                       )?.media_details.sizes.medium.source_url
                                     }
-                                    /* alt={product.images[0].alt} */ //Lighthouse detect
+                                    /* alt={product.images[0].alt} */ //Lighthouse issue duplicate info
                                     alt="pumpkin"
                                   />
                                 </div>

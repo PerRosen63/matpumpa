@@ -56,6 +56,7 @@ export interface CartItem {
 export interface Order {
   id: number;
   total: string;
+  date_created: string;
   line_items: {
     name: string;
     product_id: number;
