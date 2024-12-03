@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
+        env:
+          VITE_CONSUMER_KEY: ${{ secrets.VITE_CONSUMER_KEY }}
+          VITE_CONSUMER_SECRET: ${{ secrets.VITE_CONSUMER_SECRET }}
         run: |
           # Set BASE_PATH environment variable for the build command
           export BASE_PATH=/matpumpa/ 
