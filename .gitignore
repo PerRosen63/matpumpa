@@ -31,4 +31,5 @@ example-products.json
 
 *.txt
 
+# Secret
 .env
