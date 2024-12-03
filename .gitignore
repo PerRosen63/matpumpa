@@ -30,3 +30,5 @@ API-keys.txt
 example-products.json
 
 *.txt
+
+.env
