@@ -39,7 +39,7 @@ jobs:
         run: npm ci
       - name: Build
         env:
-          VITE_BASE_URL: /matpumpa/
+          VITE_BASE_URL: /matpumpa
           VITE_CONSUMER_KEY: ${{ secrets.VITE_CONSUMER_KEY }}
           VITE_CONSUMER_SECRET: ${{ secrets.VITE_CONSUMER_SECRET }}
         run: | 
