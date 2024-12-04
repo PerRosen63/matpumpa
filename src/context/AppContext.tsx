@@ -110,7 +110,8 @@ const AppContext = createContext<AppContextProps | null>(null);
 
 interface AppProviderProps {
   children: React.ReactNode;
-  baseUrl: string;
+  // baseUrl: string;
+  apiBaseUrl: string;
   consumerKey: string;
   consumerSecret: string;
   categoriesFetched: boolean;
@@ -118,7 +119,7 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({
   children,
-  baseUrl,
+  // baseUrl,
   consumerKey,
   consumerSecret,
 }) => {
@@ -248,12 +249,14 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     (id: number, forceRefetch?: boolean) => Promise<void>
   >(() => Promise.resolve());
 
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
   const fetchOrders = useCallback(async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching orders: ${response.status}`);
@@ -264,7 +267,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     } catch (error) {
       console.error("Error fetching orders", error);
     }
-  }, [baseUrl, consumerKey, consumerSecret]);
+  }, [apiBaseUrl, consumerKey, consumerSecret]);
 
   useEffect(() => {
     const fetchAllImages = async () => {
@@ -302,13 +305,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
       try {
         const productsResponse = await fetch(
-          `${baseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${apiBaseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
         );
         const productsData = await productsResponse.json();
         setProducts(productsData);
 
         const categoriesResponse = await fetch(
-          `${baseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${apiBaseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
         );
 
         const categoriesData = await categoriesResponse.json();
@@ -327,7 +330,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     }
 
     fetchOrders();
-  }, [baseUrl, consumerKey, consumerSecret, hasFetchedProducts, fetchOrders]);
+  }, [
+    apiBaseUrl,
+    consumerKey,
+    consumerSecret,
+    hasFetchedProducts,
+    fetchOrders,
+  ]);
 
   const fetchProduct = async (id: number, forceRefetch = false) => {
     setLoading(true);
@@ -346,7 +355,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       }
 
       const response = await fetch(
-        `${baseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       console.log(`Product ${id} fetched successfully.`); // Log after successful fetch
 
@@ -361,7 +370,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       console.log("Product data", data);
 
       const variationsResponse = await fetch(
-        `${baseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
       );
       const variationsData: Variation[] = await variationsResponse.json();
 
@@ -382,7 +391,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const createOrder = async () => {
     try {
       setIsOrderCreating(true);
-      const response = await fetch(`${baseUrl}/orders`, {
+      const response = await fetch(`${apiBaseUrl}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

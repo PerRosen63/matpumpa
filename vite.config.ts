@@ -11,6 +11,9 @@ export default defineConfig(({ mode }) => {
       "process.env.BASE_PATH": JSON.stringify(
         mode === "production" ? "/matpumpa/" : "/"
       ),
+      "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
+        process.env.VITE_API_BASE_URL
+      ),
     },
 
     resolve: {
