@@ -8,6 +8,7 @@ import { AppProvider } from "./context/AppContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AppProvider
+      apiBaseUrl={config.apiBaseUrl}
       baseUrl={config.baseUrl}
       consumerKey={config.consumerKey}
       consumerSecret={config.consumerSecret}

@@ -110,7 +110,7 @@ const AppContext = createContext<AppContextProps | null>(null);
 
 interface AppProviderProps {
   children: React.ReactNode;
-  // baseUrl: string;
+  baseUrl: string;
   apiBaseUrl: string;
   consumerKey: string;
   consumerSecret: string;
