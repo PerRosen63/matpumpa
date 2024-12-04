@@ -8,12 +8,12 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     base: mode === "production" ? "/matpumpa/" : "/", // Set base for production
     define: {
-      /* "process.env.BASE_PATH": JSON.stringify(
+      "process.env.BASE_PATH": JSON.stringify(
         mode === "production" ? "/matpumpa/" : "/"
-      ), */
-      "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
-        process.env.VITE_API_BASE_URL
       ),
+      /* "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
+        process.env.VITE_API_BASE_URL
+      ), */
     },
 
     resolve: {

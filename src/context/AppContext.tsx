@@ -119,7 +119,6 @@ interface AppProviderProps {
 
 export const AppProvider: React.FC<AppProviderProps> = ({
   children,
-  // baseUrl,
   consumerKey,
   consumerSecret,
 }) => {
