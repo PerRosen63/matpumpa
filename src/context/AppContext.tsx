@@ -252,10 +252,18 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
   const wpBaseUrl = "https://mfdm.se/woo/wp-json";
 
+  const authHeader = `Basic ${btoa(`${consumerKey}:${consumerSecret}`)}`;
+
   const fetchOrders = useCallback(async () => {
     try {
       const response = await fetch(
-        `${apiBaseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        //`${apiBaseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/orders`,
+        {
+          headers: {
+            Authorization: authHeader,
+          },
+        }
       );
       if (!response.ok) {
         throw new Error(`Error fetching orders: ${response.status}`);
@@ -266,7 +274,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     } catch (error) {
       console.error("Error fetching orders", error);
     }
-  }, [apiBaseUrl, consumerKey, consumerSecret]);
+  }, [apiBaseUrl, authHeader]);
 
   useEffect(() => {
     const fetchAllImages = async () => {
@@ -304,13 +312,25 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
       try {
         const productsResponse = await fetch(
-          `${apiBaseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          //`${apiBaseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${apiBaseUrl}/products`,
+          {
+            headers: {
+              Authorization: authHeader,
+            },
+          }
         );
         const productsData = await productsResponse.json();
         setProducts(productsData);
 
         const categoriesResponse = await fetch(
-          `${apiBaseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          //`${apiBaseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+          `${apiBaseUrl}/products/categories`,
+          {
+            headers: {
+              Authorization: authHeader,
+            },
+          }
         );
 
         const categoriesData = await categoriesResponse.json();
@@ -335,6 +355,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
     consumerSecret,
     hasFetchedProducts,
     fetchOrders,
+    authHeader,
   ]);
 
   const fetchProduct = async (id: number, forceRefetch = false) => {
@@ -354,7 +375,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       }
 
       const response = await fetch(
-        `${apiBaseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        // `${apiBaseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/products/${id}`,
+        {
+          headers: {
+            Authorization: authHeader,
+          },
+        }
       );
       console.log(`Product ${id} fetched successfully.`); // Log after successful fetch
 
@@ -369,7 +396,13 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       console.log("Product data", data);
 
       const variationsResponse = await fetch(
-        `${apiBaseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        // `${apiBaseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
+        `${apiBaseUrl}/products/${id}/variations`,
+        {
+          headers: {
+            Authorization: authHeader,
+          },
+        }
       );
       const variationsData: Variation[] = await variationsResponse.json();
 
@@ -394,7 +427,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Basic " + btoa(`${consumerKey}:${consumerSecret}`),
+          //Authorization: "Basic " + btoa(`${consumerKey}:${consumerSecret}`),
+          Authorization: authHeader,
         },
         body: JSON.stringify({
           payment_method: "cod",
