@@ -71,7 +71,7 @@ export const MyOrders = () => {
                       </div>
                       {order.date_created && (
                         <div className="flex">
-                          <span className="block px-2 w-24 text-right">
+                          <span className="block px-2 text-right">
                             {order.date_created.slice(0, 10)}
                           </span>
 
