@@ -107,6 +107,11 @@ export function Products() {
         <>
           <ContentSectionNarrow>
             <div>
+              <div className="text-center">
+                <strong>
+                  Åtgärdar en bugg! Ursäkta. Var god återkom senare!/Per
+                </strong>
+              </div>
               <div className="flex max-md:flex-col mt-5 md:mt-10 mb-4 max-md:items-center justify-between gap-y-1">
                 {/* Filter Buttons */}
                 <label className="text-center min-w-64 md:min-w-56 lg:min-w-64 checkbox-label my-1 py-3 pt-4 px-4 rounded-xl font-sans font-semibold text-xl bg-yellow-custom text-green-custom border-double border-7 border-orange-custom hover:border-solid hover:border-7 hover:border-yellow-custom cursor-pointer">
