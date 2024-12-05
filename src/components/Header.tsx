@@ -10,9 +10,12 @@ export const Header = () => {
   const { amountTotal } = useContext(AppContext) ?? { amountTotal: 0 };
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const hamRef = useRef<HTMLButtonElement>(null);
 
-  const toggleMenu = () => {
+  const toggleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setIsOpen(!isOpen);
+    console.log("click");
   };
 
   const closeMenu = () => {
@@ -21,29 +24,21 @@ export const Header = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Check if the click occurred outside the mobile nav and the hamburger button
       if (
         navRef.current &&
         !navRef.current.contains(event.target as Node) &&
-        !(event.target instanceof HTMLButtonElement)
+        hamRef.current &&
+        event.target !== hamRef.current
       ) {
-        setIsOpen(false); // Close the mobile nav
+        setIsOpen(false);
       }
     };
 
-    if (isOpen) {
-      // Only add listener if menu is open
-      document.addEventListener("mousedown", handleClickOutside); // Use mousedown to catch clicks on buttons too
-    } else {
-      // Clean up on close
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    // Clean up the event listener when the component unmounts or isOpen changes
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
-  }, [isOpen]); // Add isOpen to the dependency array
+  }, []);
 
   return (
     <>
@@ -64,6 +59,7 @@ export const Header = () => {
             </div>
             <div>
               <button
+                ref={hamRef}
                 onClick={toggleMenu}
                 className="fixed bg-green-custom shadow-md right-3 top-3 z-10 lg:hidden text-yellow-custom hover:text-white focus:text-white focus:outline-none"
               >
