@@ -78,11 +78,15 @@ export const Header = () => {
             <div>
               <nav
                 ref={navRef}
-                className={`w-full max-lg:fixed left-0 top-0 bg-green-custom max-md:w-full max-lg:shadow-md border-gray-700 ${
-                  isOpen ? "block" : "max-lg:hidden max-lg:sr-only"
-                }`}
+                className={`w-full max-lg:fixed left-0 top-0 bg-green-custom max-md:w-full max-lg:shadow-md border-gray-700 max-lg:duration-[400ms] ease-in-out ${
+                  isOpen
+                    ? "max-lg:translate-y-0 max-lg:opacity-100"
+                    : "max-lg:-translate-y-full max-lg:opacity-0"
+                } ${isOpen ? "block" : ""}`}
               >
-                <ul className="flex flex-col lg:flex-row font-sans small-caps text-clamp-h6 text-yellow-custom-link">
+                <ul
+                  className={`flex flex-col lg:flex-row font-sans small-caps text-clamp-h6 text-yellow-custom-link`}
+                >
                   <li className="py-2">
                     <NavLink
                       onClick={closeMenu}
