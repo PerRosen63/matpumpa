@@ -1,4 +1,4 @@
-# Webshop built in "headless" WordPress and React (degree project)
+# Webshop built in Headless WordPress and React (degree project)
 
 [Live site GitHub pages](https://perrosen63.github.io/matpumpa/)
 
@@ -7,6 +7,7 @@ matpumpa.se. A webshop for selling pumpkins aimed for cooking.
 
 ## Tech stack
 
+### Front end
 - React.js
 - TypeScript
 - Vite dev tool
@@ -15,6 +16,7 @@ matpumpa.se. A webshop for selling pumpkins aimed for cooking.
 - chadcn ui components
 - Google fonts
 - Frontend deployment to Github Pages
+### Back end
 - WordPress on remote server
 - SQL database
 - REST API
