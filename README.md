@@ -1,7 +1,7 @@
-# Webshop matpumpa.se builty in "headless" WordPress and React (degree project)
+# Webshop built in "headless" WordPress and React (degree project)
 
 ## Project idea summary
-A webshop for selling pumpkins aimed for cooking.
+matpumpa.se. A webshop for selling pumpkins aimed for cooking.
 
 ## Tech stack
 
