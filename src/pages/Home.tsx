@@ -23,7 +23,7 @@ export const Home = () => {
           <div className="w-full md:w-1/3 md:order-1 md:mt-[-40px] md:mb-10 p-3 min-h-[60vh] flex justify-center items-center bg-start-2 bg-center bg-no-repeat bg-cover rounded-2xl">
             <div className="xl:w-2/3 p-4 bg-yellow-custom border-rounded flex flex-col items-center">
               <h2 className="text-clamp-h4 text-green-custom text-center leading-9 my-3">
-                Köp matpumpa?
+                Köp matpumpa!
               </h2>
               <p className="text-green-custom mb-4 text-center">
                 Beställ de godaste sorterna!
