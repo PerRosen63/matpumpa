@@ -15,9 +15,9 @@ export const Home = () => {
       <TitleSection>matpumpa.se</TitleSection>
       <ContentSection>
         <p className="text-center max-w-3xl mx-auto md:mb-10">
-          Mauris sollicitudin fermentum libero. Vestibulum fringilla pede sit
-          amet augue. Ut varius tincidunt libero. Vivamus elementum semper nisi.
-          Quisque id odio.
+          OBS! Detta är ett skolprojekt. Inga riktiga produkter finns att
+          beställa. Man kan lägga ordrar anonymt och se sin order listas med
+          övriga.
         </p>
         <div className="flex max-md:flex-wrap gap-4 mt-10">
           <div className="w-full md:w-1/3 md:order-1 md:mt-[-40px] md:mb-10 p-3 min-h-[60vh] flex justify-center items-center bg-start-2 bg-center bg-no-repeat bg-cover rounded-2xl">
