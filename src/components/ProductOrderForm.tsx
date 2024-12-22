@@ -143,8 +143,8 @@ export const ProductOrderForm = () => {
                       {getAvailableStock(
                         selectedProduct?.id || 0,
                         variation.id
-                      )}
-                      )
+                      )}{" "}
+                      st i lager)
                     </span>
                   </option>
                 )
@@ -185,7 +185,7 @@ export const ProductOrderForm = () => {
         <strong>
           {!variations.length &&
             (selectedProduct?.stock_status === "instock"
-              ? getAvailableStock(selectedProduct.id) + " i lager"
+              ? getAvailableStock(selectedProduct.id) + " st i lager"
               : "Slut i lager")}
         </strong>
 
