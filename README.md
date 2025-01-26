@@ -3,7 +3,7 @@
 [Live site GitHub pages](https://perrosen63.github.io/matpumpa/)
 
 ## Project idea summary
-matpumpa.se. A webshop for selling pumpkins aimed for cooking.
+matpumpa.se. A fictional webshop for selling pumpkins aimed for cooking.
 
 ## Tech stack
 
