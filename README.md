@@ -46,4 +46,4 @@ matpumpa.se. A fictional webshop for selling pumpkins aimed for cooking.
 
 #### Mobile
 
-![Screenshot5](/screenshots/screencapture-matpumpa-05.jpg "Mobile")
+![Screenshot5](/screenshots/screencapture-matpumpa-05.JPG "Mobile")
