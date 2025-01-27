@@ -7,12 +7,11 @@ import React, {
   useState,
 } from "react";
 import { TopLevel } from "../models/IProduct";
-// import { error } from "console";
 
 interface Category {
   id: number;
   name: string;
-  description: string; // Add description property
+  description: string;
 }
 
 interface ImageSizes {
@@ -101,9 +100,6 @@ interface AppContextProps {
   orderId: number | null;
   orders: Order[];
   fetchOrders: () => Promise<void>;
-  // fetchOrder: (id: number) => void;
-  // selectedOrder: Order | null;
-  // hasFetchedOrders: boolean;
 }
 
 const AppContext = createContext<AppContextProps | null>(null);
@@ -139,8 +135,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [isOrderCreating, setIsOrderCreating] = useState(false);
   const [orderId, setOrderId] = useState<number | null>(null);
   const [orders, setOrders] = useState<Order[]>([]); // Initialize as an empty array
-  // const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  // const [hasFetchedOrders, setHasFetchedOrders] = useState(false);
 
   const addToCart = (
     product: TopLevel,
@@ -256,21 +250,16 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await fetch(
-        //`${apiBaseUrl}/orders?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
-        `${apiBaseUrl}/orders`,
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      );
+      const response = await fetch(`${apiBaseUrl}/orders`, {
+        headers: {
+          Authorization: authHeader,
+        },
+      });
       if (!response.ok) {
         throw new Error(`Error fetching orders: ${response.status}`);
       }
       const data: Order[] = await response.json();
       setOrders(data);
-      // setHasFetchedOrders(true);
     } catch (error) {
       console.error("Error fetching orders", error);
     }
@@ -311,20 +300,15 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       setLoading(true);
 
       try {
-        const productsResponse = await fetch(
-          //`${apiBaseUrl}/products?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
-          `${apiBaseUrl}/products`,
-          {
-            headers: {
-              Authorization: authHeader,
-            },
-          }
-        );
+        const productsResponse = await fetch(`${apiBaseUrl}/products`, {
+          headers: {
+            Authorization: authHeader,
+          },
+        });
         const productsData = await productsResponse.json();
         setProducts(productsData);
 
         const categoriesResponse = await fetch(
-          //`${apiBaseUrl}/products/categories?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
           `${apiBaseUrl}/products/categories`,
           {
             headers: {
@@ -335,7 +319,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData);
-        setCategoriesFetched(true); // Set the flag to true AFTER fetching categories
+        setCategoriesFetched(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -361,8 +345,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const fetchProduct = async (id: number, forceRefetch = false) => {
     setLoading(true);
 
-    console.log(`Fetching product ${id} (forceRefetch: ${forceRefetch})...`); // Log before fetching
-
     try {
       // Check if the product is already in the products array AND forceRefetch is false
       const existingProduct = products.find((product) => product.id === id);
@@ -374,16 +356,11 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         }
       }
 
-      const response = await fetch(
-        // `${apiBaseUrl}/products/${id}?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
-        `${apiBaseUrl}/products/${id}`,
-        {
-          headers: {
-            Authorization: authHeader,
-          },
-        }
-      );
-      console.log(`Product ${id} fetched successfully.`); // Log after successful fetch
+      const response = await fetch(`${apiBaseUrl}/products/${id}`, {
+        headers: {
+          Authorization: authHeader,
+        },
+      });
 
       const data = await response.json();
 
@@ -393,10 +370,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 
       setSelectedProduct(data);
 
-      console.log("Product data", data);
-
       const variationsResponse = await fetch(
-        // `${apiBaseUrl}/products/${id}/variations?consumer_key=${consumerKey}&consumer_secret=${consumerSecret}`
         `${apiBaseUrl}/products/${id}/variations`,
         {
           headers: {
@@ -414,7 +388,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       console.error("Error fetching product variations:", error);
     } finally {
       setLoading(false);
-      console.log(`Fetching product ${id} completed.`); // Log after fetch completes (success or error)
     }
   };
 
@@ -427,7 +400,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //Authorization: "Basic " + btoa(`${consumerKey}:${consumerSecret}`),
           Authorization: authHeader,
         },
         body: JSON.stringify({
@@ -449,12 +421,10 @@ export const AppProvider: React.FC<AppProviderProps> = ({
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Order created successfully", data);
         setOrderId(data.id);
 
         clearCart();
 
-        console.log("Re-fetching product data after order...");
         preliminaryCart.forEach((item) => {
           fetchProductRef.current(item.product.id, true); // Force re-fetch for each product
         });
@@ -496,9 +466,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         orderId,
         orders,
         fetchOrders,
-        // fetchOrder,
-        // selectedOrder,
-        // hasFetchedOrders,
       }}
     >
       {children}

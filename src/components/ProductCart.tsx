@@ -42,8 +42,6 @@ export const ProductCart = () => {
     return total + getItemPrice(item) * item.quantity;
   }, 0);
 
-  console.log("ProductCart rendered!", preliminaryCart); // Log on render
-
   return (
     <>
       <ul className="flex flex-col">
@@ -107,9 +105,6 @@ export const ProductCart = () => {
                   color="plain"
                   size="2rem"
                   className="[&>path]:fill-yellow-custom-link [&>path]:stroke-yellow-custom-link"
-                  /* onClick={() =>
-                    removeFromCart(item.product.id, item.variationId)
-                  } */
                 >
                   Ta bort
                 </Trash>

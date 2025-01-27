@@ -1,5 +1,4 @@
 export const Hamburger = ({ isOpen }: { isOpen: boolean }) => {
-  // console.log(isOpen);
   return (
     <>
       <svg

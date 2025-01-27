@@ -29,7 +29,7 @@ export const ProductOrderForm = () => {
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
-  const [showAddedMessage, setShowAddedMessage] = useState(false); // New state
+  const [showAddedMessage, setShowAddedMessage] = useState(false);
 
   const variations = selectedProduct
     ? productVariations[selectedProduct.id] || []
@@ -43,15 +43,12 @@ export const ProductOrderForm = () => {
   };
 
   const handleAddToCart = async (selectedQuantity: number) => {
-    // console.log("handleAddToCart called!");
     if (!selectedProduct) return;
 
     if (variations.length > 0 && selectedVariationId !== undefined) {
       addToCart(selectedProduct, selectedVariationId, selectedQuantity);
-      // console.log("selected quantity variations", selectedQuantity);
     } else {
       addToCart(selectedProduct, undefined, selectedQuantity);
-      // console.log("selected quantity simple", selectedQuantity);
     }
 
     setSelectedQuantity(1);
@@ -69,18 +66,12 @@ export const ProductOrderForm = () => {
     productId: number,
     variationId?: number
   ): number => {
-    // console.log("Calculating available stock for:", productId, variationId); // Debug log
-
     const baseStock = variationId
       ? variations.find((v) => v.id === variationId)?.stock_quantity || 0
       : selectedProduct?.stock_quantity || 0;
 
-    // console.log("Base stock:", baseStock); // Debug log
-
     if (!preliminaryCart) {
-      // console.log("Preliminary cart is undefined, returning base stock"); // Debug log
-
-      return baseStock; // Undefined
+      return baseStock; // Preliminary cart is undefined, returning base stock
     }
 
     const reservedQuantity = preliminaryCart.reduce((total, item) => {
@@ -90,16 +81,11 @@ export const ProductOrderForm = () => {
       return total;
     }, 0);
 
-    // console.log("Reserved quantity:", reservedQuantity); // Debug log
-
     const availableStock = Math.max(baseStock - reservedQuantity, 0);
-    // console.log("Available stock:", availableStock); // Debug log
     return availableStock;
   };
 
-  useEffect(() => {
-    // console.log("preliminaryCart-useEffect", preliminaryCart);
-  }, [preliminaryCart, selectedProduct]);
+  useEffect(() => {}, [preliminaryCart, selectedProduct]);
 
   const isAddToCartDisabled =
     (variations.length > 0 && selectedVariationId === undefined) ||
@@ -200,7 +186,6 @@ export const ProductOrderForm = () => {
             )}
             onQuantityChange={(newQuantity) => {
               setSelectedQuantity(newQuantity);
-              // console.log("New quantity:", newQuantity);
             }}
           />
         </div>
