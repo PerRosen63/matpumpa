@@ -4,7 +4,7 @@
 
 ## Project idea summary
 
-matpumpa.se. A fictional webshop for selling pumpkins aimed for cooking.
+matpumpa.se is a fictional webshop for selling pumpkins aimed for cooking. It's a school degree task and no real pumpkins are for sale. The main purpose of this project is to become familiar with the so called headless WordPress/WooCommerce approach where the front end is decoupled from back end and built in a javaScript framework. At this stage it is possible to submit (fake) orders, but only as a guest and anonymous. You can also list the latest orders and their details.
 
 ## Tech stack
 
